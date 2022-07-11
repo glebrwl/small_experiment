@@ -1,0 +1,42 @@
+{% block content %}
+<p>The experiment consists of two parts. We will provide you with detailed instructions before each part.</p>
+{% endblock %}
+
+{% block title %}
+Instructions Part 1
+{% endblock %}
+
+{% block content %}
+<p> In Part I, you will see 9 numbers on the screen. Your task is to find among them 2 numbers that sum up to a "target" number. In each screen only two numbers sum up to the target number. You will advance to a next screen once you submitted a correct answer . You will have {{C.round_time}} minutes to work on this task and will receive {{C.piece_rate}} GBP per correctly solved screen. The timer will indicate how much time is left. Once {{C.round_time}} minutes are up, you will learn how many tasks you solved correctly and receive the instructions for the Part 2 of the study.</p>
+<p> Note, most often it is faster not to use a calculator to find the solution.</p>
+<p>Below you find an example screen. In this example, 82 is the target number and the pair of 48 and 34 is the solution.</p>
+
+<div style="text-align:center">
+    <img src="/static/global/pizaa_pizza.jpg" width="60%" />
+</div>
+
+<style>
+  .bottom-two {
+     margin-bottom: 1cm;
+  }
+</style>
+<p class="bottom-two"> </p>
+
+<hr>
+
+<p class="bottom-two"> </p>
+
+ <h5> Comprehension Question </h5>
+<p> Please answer the comprehension questions below. If you are not sure, you can consult the instructions.
+</p>
+<p> Is this statement true or false?
+</p>
+
+{{formfields}}
+
+
+<div class="button-row">
+    <button class="otree-btn-next btn btn-primary">{{C.button_next}}</button>
+</div>
+
+{% endblock %}
