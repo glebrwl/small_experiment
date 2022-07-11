@@ -1,6 +1,12 @@
 import random
 import itertools
 from otree.api import *
+from otree.api import *
+import csv
+import itertools
+import random
+import os
+import pathlib
 
 class C(BaseConstants):
     answertime = 180
@@ -36,8 +42,19 @@ class Player(BasePlayer):
     q_comprehension_screen_2_2 = models.IntegerField(choices=[[1, 'True'], [0, 'False']],
                                                      label='The target number is the same in all screens.',
                                                      widget=widgets.RadioSelectHorizontal)
-
+    relevant_guess = models.IntegerField()
 # FUNCTIONS
+
+def creating_session(subsession):
+    treated = itertools.cycle([True, False]) ##MC: as we have 3 treatments, i would rather suggest to work with the variable set up like relevant_guess below (1,2,3)
+
+
+    for player in subsession.get_players():
+        participant = player.participant
+        participant.Prolific_ID = player.participant.label
+        participant.treatment = next(treated)
+        participant.relevant_guess = random.choice([1, 2])
+
 # PAGES
 
 class a_Welcome(Page):
@@ -47,10 +64,13 @@ class a_Welcome(Page):
     def is_displayed(player: Player):
         return player.round_number == 1
 
-    # def vars_for_template(player: Player):
-    #     # player.Prolific_ID = player.participant.label
-    #     return dict(quiztype=player.participant.quiztype,
-    #                 file_abbr=player.participant.quiztype.replace(" & ", ""))
+    def vars_for_template(player: Player):
+        # player.Prolific_ID = player.participant.label
+        return dict(treatment=player.participant.treatment,
+                    relevant_guess=player.participant.relevant_guess
+                    )
+ #I do not know why it does not show the variable in the database, but it generates it, see welcome page.
+
 
 class b_Instructions_part_1(Page):
     form_model = 'player'
@@ -59,6 +79,8 @@ class b_Instructions_part_1(Page):
     def error_message(player, values):
         if values['q_comprehension_screen_2_1'] == 0:
             return "The answer is incorrect. Please consult the instructions and try again."
+
+        #MC: do not forget to put a checker on the second comprehension question too
 
 class c_Before_task_start(Page):
     def before_next_page(player: Player, timeout_happened):

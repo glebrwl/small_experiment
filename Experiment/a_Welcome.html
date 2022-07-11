@@ -20,6 +20,21 @@ Welcome!
 
 <p> <b> Consent:</b> I have read and understood the information above. I agree to comply with these rules of conduct and want to participate in this study. Please click “Continue” to proceed.</p>
 
+
+    <p>  {{ treatment }}</p>
+
+{{ if treatment == True }}
+
+    <p>e.g, ex-ante</p>
+
+
+{{endif}}
+
+
+
+
+
+
 <div class="button-row">
     <button class="otree-btn-next btn btn-primary">{{C.button_next}}</button>
 </div>

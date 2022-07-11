@@ -6,7 +6,7 @@ SESSION_CONFIGS = [
         name = 'Experiment',
         display_name = 'Donations Experiment',
         app_sequence = ['Experiment'],
-        num_demo_participants = 1
+        num_demo_participants = 4
     )
 ]
 
@@ -51,3 +51,28 @@ Here are some oTree games.
 SECRET_KEY = '8575747310029'
 
 INSTALLED_APPS = ['otree']
+
+PARTICIPANT_FIELDS = [
+    # overal fields
+    'treatment',
+    'quiztype',
+    'Prolific_ID',
+    'nr_correct_part_1',
+    'trust_timeout_happened',
+    'confidence_outcome',
+    'nr_correct_part_2',
+    'advice_sought',
+    'base_payoff',
+    'q_part1_payoff',
+    'total_payoff',
+    'max_payoff',
+    'confidence_payoff',
+    'confidence_lottery_payoff',
+    'q_part2_payoff',
+    'advice_payoff',
+    'bonus_payoff',
+    'relevant_guess',
+    'gk_part'
+    # Questionnaire Items
+
+]
