@@ -46,7 +46,7 @@ class Player(BasePlayer):
 # FUNCTIONS
 
 def creating_session(subsession):
-    treated = itertools.cycle([1, 2,3]) ##MC: as we have 3 treatments, i would rather suggest to work with the variable set up like relevant_guess below (1,2,3)
+    treated = itertools.cycle([1, 2,3]) ## write here what number stands for what treatment
 
 
     for player in subsession.get_players():
