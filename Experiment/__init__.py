@@ -42,7 +42,7 @@ class Player(BasePlayer):
     q_comprehension_screen_2_2 = models.IntegerField(choices=[[1, 'True'], [0, 'False']],
                                                      label='The target number is the same in all screens.',
                                                      widget=widgets.RadioSelectHorizontal)
-    relevant_guess = models.IntegerField()
+
 # FUNCTIONS
 
 def creating_session(subsession):
