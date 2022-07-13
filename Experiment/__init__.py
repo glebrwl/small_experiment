@@ -46,14 +46,15 @@ class Player(BasePlayer):
 # FUNCTIONS
 
 def creating_session(subsession):
-    treated = itertools.cycle([True, False]) ##MC: as we have 3 treatments, i would rather suggest to work with the variable set up like relevant_guess below (1,2,3)
+    treated = itertools.cycle([1, 2,3]) ##MC: as we have 3 treatments, i would rather suggest to work with the variable set up like relevant_guess below (1,2,3)
 
 
     for player in subsession.get_players():
         participant = player.participant
         participant.Prolific_ID = player.participant.label
         participant.treatment = next(treated)
-        participant.relevant_guess = random.choice([1, 2])
+        #participant.relevant_guess = random.choice([1, 2, 3])
+
 
 # PAGES
 
@@ -67,7 +68,6 @@ class a_Welcome(Page):
     def vars_for_template(player: Player):
         # player.Prolific_ID = player.participant.label
         return dict(treatment=player.participant.treatment,
-                    relevant_guess=player.participant.relevant_guess
                     )
  #I do not know why it does not show the variable in the database, but it generates it, see welcome page.
 
