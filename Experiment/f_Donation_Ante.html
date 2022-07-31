@@ -1,0 +1,29 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+Donation
+{% endblock %}
+
+{% block content %}
+<p> You can now decide
+    {{ if treatment == 1 }}
+        what share of
+    {{else}}
+        what amount from
+    {{endif}}
+    your earnings should be donated to the charity after the experiment. If afterr the donation your earnings from Part 2 exceed {{C.GBP_threshold}} GBP, you will receive a bonus of {{C.bonus_amount}} GBP.
+</p>
+
+{{ if treatment == 1}}
+    <p> Below you can enter any number between 0% (donate nothing) and 100% (donate all). </p>
+    {{formfield "donate_ante_share"}}
+{{else}}
+    <p> Below you can enter a donation amount starting from 0.00 GBP (donate nothing). If the donation amount you chose, exceeds your upcoming earnings in Part 2, your complete earnings from Part 2 will be donated to the charity. </p>
+    {{formfield "donate_ante_abs"}}
+{{endif}}
+
+<div class="button-row">
+    <button class="otree-btn-next btn btn-primary">{{C.button_next}}</button>
+</div>
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+Subjective Risk
+{% endblock %}
+
+{% block content %}
+<p> In your opinion, how likely are you to earn {{C.GBP_threshold}} in Part 2, given your
+
+{{ if treatment == 3}}
+    hypothetical
+{{endif}}
+
+donation decisions? PLease indicate your chance on a scale below where 0 means no chance of reaching threshold and 100 means that it is 100% certain that you will reach the threshold. </p>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.slidecontainer {
+  width: 100%;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 15px;
+  border-radius: 5px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #3377FF;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #3377FF;
+  cursor: pointer;
+}
+
+</style>
+</head>
+<body>
+
+<p>Drag the slider to choose you certainty level.</p>
+
+<div class="slidecontainer">
+  <input type="range" name="subjective_risk" min="0" max="100" value="50" class="slider" id="myRange">
+  <p>Value: <span id="demo"></span></p>
+</div>
+
+<script>
+var slider = document.getElementById("myRange");
+var output = document.getElementById("demo");
+output.innerHTML = slider.value;
+
+slider.oninput = function() {
+  output.innerHTML = this.value;
+}
+</script>
+
+<div class="button-row">
+    <button class="otree-btn-next btn btn-primary">{{C.button_next}}</button>
+</div>
+
+</body>
+</html>
+{% endblock %}

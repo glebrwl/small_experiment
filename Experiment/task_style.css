@@ -1,0 +1,45 @@
+#new_task_button{
+    width: 100px;
+    height: 40px;
+    background-color: rgb(36, 126, 243);
+    border: none;
+    color: white;
+    border-radius: 4px;
+}
+#check_button{
+    height: 30px;
+    width: 70px;
+    background-color: rgb(36, 126, 243);
+    border: none;
+    color: white;
+    border-radius: 4px;
+}
+
+table.Niederle{
+    border-collapse: collapse;
+    width: 50%;
+    height: 40px;
+    border: 1px solid black;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+table.Niederle td {
+    width: 10%;
+    border-right: 1px solid black;
+    text-align: center;
+}
+
+div.QuestionDIV{
+    text-align: center;
+    margin-top: 50px;
+}
+div.QuestionDIV p{
+    margin-top: 50px;
+}
+
+div.ResultDIV{
+    margin-top: 30px;
+    text-align: center;
+}

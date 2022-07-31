@@ -18,22 +18,22 @@ matrices1, targets1, results1 = task_generator(30)
 matrices2, targets2, results2 = task_generator(30)
 
 # write files as csv:
-with open('tasks1.csv', 'w') as f:
+with open('../Experiment/z_tasks1.csv', 'w') as f:
     write = csv.writer(f)
     write.writerows(matrices1)
-with open('targets1.csv', 'w') as f:
+with open('../Experiment/z_targets1.csv', 'w') as f:
     write = csv.writer(f)
     write.writerows(map(lambda x: [x], targets1))
-with open('pairs1.csv', 'w') as f:
+with open('../Experiment/z_pairs1.csv', 'w') as f:
     write = csv.writer(f)
     write.writerows(results1)
 
-with open('tasks2.csv', 'w') as f:
+with open('../Experiment/z_tasks2.csv', 'w') as f:
     write = csv.writer(f)
     write.writerows(matrices2)
-with open('targets2.csv', 'w') as f:
+with open('../Experiment/z_targets2.csv', 'w') as f:
     write = csv.writer(f)
     write.writerows(map(lambda x: [x], targets2))
-with open('pairs2.csv', 'w') as f:
+with open('../Experiment/z_pairs2.csv', 'w') as f:
     write = csv.writer(f)
     write.writerows(results2)
