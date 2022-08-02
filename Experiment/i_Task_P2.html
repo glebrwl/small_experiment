@@ -1,0 +1,237 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block title %}Task 1. Part 2: Finding the 2 Numbers forming a sum{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% 'task_style.css' %}">
+
+<h5><strong>Please find the two numbers that sum up to <i id="target"></i></strong></h5>
+
+<div class="QuestionDIV">
+    <table class="Niederle">
+        <tr style="outline: thin solid">
+            <td> <input type="checkbox" id="cell1" name="number" onchange="cbChange(this)">
+                 <label for="cell1" id="num1"></label>
+            </td>
+            <td> <input type="checkbox" id="cell2" name="number" onchange="cbChange(this)">
+                 <label for="cell2" id="num2"></label>
+            </td>
+            <td> <input type="checkbox" id="cell3" name="number" onchange="cbChange(this)">
+                 <label for="cell3" id="num3"></label>
+            </td>
+        </tr>
+        <tr style="outline: thin solid">
+            <td> <input type="checkbox" id="cell4" name="number" onchange="cbChange(this)">
+                 <label for="cell4" id="num4"></label>
+            </td>
+            <td> <input type="checkbox" id="cell5" name="number" onchange="cbChange(this)">
+                 <label for="cell5" id="num5"></label>
+            </td>
+            <td> <input type="checkbox" id="cell6" name="number" onchange="cbChange(this)">
+                 <label for="cell6" id="num6"></label>
+            </td>
+        </tr>
+        <tr style="outline: thin solid">
+            <td> <input type="checkbox" id="cell7" name="number" onchange="cbChange(this)">
+                 <label for="cell7" id="num7"></label>
+            </td>
+            <td> <input type="checkbox" id="cell8" name="number" onchange="cbChange(this)">
+                 <label for="cell8" id="num8"></label>
+            </td>
+            <td> <input type="checkbox" id="cell9" name="number" onchange="cbChange(this)">
+                 <label for="cell9" id="num9"></label>
+            </td>
+        </tr>
+    </table>
+    <p>
+        <input type="submit" id="check_button" value="Submit" >
+        <input type="hidden" name="nr_correct_2" id="Task2Correct" />
+        <i>   </i>
+    </p>
+</div>
+
+
+<script type="text/javascript">
+    var score = 0
+    var task2_score = document.getElementById("Task2Correct");
+
+    var matrices2 =[94,25,48,87,88,54,64,90,47,
+                    68,15,11,41,90,19,14,62,11,
+                    53,63,18,69,95,10,43,56,55,
+                    17,25,13,13,18,50,55,65,93,
+                    32,31,68,85,14,17,32,53,39,
+                    38,77,35,85,61,50,96,36,45,
+                    91,73,11,37,68,55,74,88,51,
+                    50,44,11,95,76,77,67,92,70,
+                    70,14,24,96,53,40,49,81,23,
+                    57,93,76,81,16,81,66,28,80,
+                    54,59,56,46,68,18,14,40,12,
+                    56,28,76,27,47,13,69,32,60,
+                    16,15,75,18,57,39,36,95,76,
+                    40,55,25,49,86,46,45,71,69,
+                    55,11,10,24,21,76,87,40,19,
+                    44,54,29,82,77,66,75,96,55,
+                    81,40,78,11,98,17,36,76,60,
+                    54,60,26,39,33,21,27,21,28,
+                    93,20,19,57,65,17,23,62,31,
+                    38,86,25,59,85,24,80,57,13,
+                    53,13,87,27,65,34,35,33,67,
+                    97,94,80,48,90,44,47,93,70,
+                    66,50,62,51,40,98,52,97,13,
+                    88,55,92,94,60,62,44,35,35,
+                    23,70,35,77,37,19,93,44,23,
+                    38,71,42,82,78,48,21,49,74,
+                    20,25,48,36,34,41,62,50,53,
+                    47,61,87,93,69,81,28,29,47,
+                    33,44,92,34,23,64,19,48,69,
+                    44,84,17,54,46,86,20,83,87]
+
+    var j = 0
+
+
+    var num1 = matrices2.slice(j,j+1)
+    var num2 = matrices2.slice(j+1,j+2)
+    var num3 = matrices2.slice(j+2,j+3)
+    var num4 = matrices2.slice(j+3,j+4)
+    var num5 = matrices2.slice(j+4,j+5)
+    var num6 = matrices2.slice(j+5,j+6)
+    var num7 = matrices2.slice(j+6,j+7)
+    var num8 = matrices2.slice(j+7,j+8)
+    var num9 = matrices2.slice(j+8,j+9)
+
+
+    document.getElementById("num1").innerHTML = num1
+    document.getElementById("num2").innerHTML = num2
+    document.getElementById("num3").innerHTML = num3
+    document.getElementById("num4").innerHTML = num4
+    document.getElementById("num5").innerHTML = num5
+    document.getElementById("num6").innerHTML = num6
+    document.getElementById("num7").innerHTML = num7
+    document.getElementById("num8").innerHTML = num8
+    document.getElementById("num9").innerHTML = num9
+
+
+    document.getElementById("cell1").value = num1
+    document.getElementById("cell2").value = num2
+    document.getElementById("cell3").value = num3
+    document.getElementById("cell4").value = num4
+    document.getElementById("cell5").value = num5
+    document.getElementById("cell6").value = num6
+    document.getElementById("cell7").value = num7
+    document.getElementById("cell8").value = num8
+    document.getElementById("cell9").value = num9
+
+    var targets2 = [119,79,73,90,31,88,141,127,67,157,102,60,31,109,59,171,95,54,119,137,92,
+        92,163,97,72,120,68,174,78,66]
+    var k = 0
+    var target = targets2.slice(k,k+1)
+
+    document.getElementById("target").innerHTML = target
+
+    var checkboxes = document.querySelectorAll("input[type=checkbox]");
+    var check_button = document.getElementById("check_button");
+    check_button.disabled = true
+
+
+    function getChecked() {
+        var checked = [];
+
+        for (var i = 0; i < checkboxes.length; i++) {
+            var checkbox = checkboxes[i];
+            if (checkbox.checked) checked.push(checkbox.value);
+         }
+
+         return checked;
+     }
+
+
+
+     function cbChange(obj) {
+       var instate=(obj.checked);
+       var submitted = getChecked();
+       if (submitted.length != 2) {
+          check_button.disabled = true
+       }
+       else {
+        check_button.disabled = false
+       }
+
+       if(instate)obj.checked = true;
+     }
+
+
+
+    check_button.addEventListener("click", function() {
+       var checkedraw = getChecked();
+       var checkedint = checkedraw.map(Number);
+
+       var sum_answers = checkedint.reduce(function(a, b) { return a +        b; }, 0);
+
+       if (sum_answers == target){
+            score++;
+        }
+
+        task2_score.value = score; //Input to the data
+
+        new_task()
+    }
+   );
+
+
+    function new_task() {
+        j += 9
+
+
+        var num1 = matrices2.slice(j,j+1)
+        var num2 = matrices2.slice(j+1,j+2)
+        var num3 = matrices2.slice(j+2,j+3)
+        var num4 = matrices2.slice(j+3,j+4)
+        var num5 = matrices2.slice(j+4,j+5)
+        var num6 = matrices2.slice(j+5,j+6)
+        var num7 = matrices2.slice(j+6,j+7)
+        var num8 = matrices2.slice(j+7,j+8)
+        var num9 = matrices2.slice(j+8,j+9)
+
+        document.getElementById("num1").innerHTML = num1
+        document.getElementById("num2").innerHTML = num2
+        document.getElementById("num3").innerHTML = num3
+        document.getElementById("num4").innerHTML = num4
+        document.getElementById("num5").innerHTML = num5
+        document.getElementById("num6").innerHTML = num6
+        document.getElementById("num7").innerHTML = num7
+        document.getElementById("num8").innerHTML = num8
+        document.getElementById("num9").innerHTML = num9
+
+        document.getElementById("cell1").checked = false
+        document.getElementById("cell2").checked = false
+        document.getElementById("cell3").checked = false
+        document.getElementById("cell4").checked = false
+        document.getElementById("cell5").checked = false
+        document.getElementById("cell6").checked = false
+        document.getElementById("cell7").checked = false
+        document.getElementById("cell8").checked = false
+        document.getElementById("cell9").checked = false
+
+        document.getElementById("cell1").value = num1
+        document.getElementById("cell2").value = num2
+        document.getElementById("cell3").value = num3
+        document.getElementById("cell4").value = num4
+        document.getElementById("cell5").value = num5
+        document.getElementById("cell6").value = num6
+        document.getElementById("cell7").value = num7
+        document.getElementById("cell8").value = num8
+        document.getElementById("cell9").value = num9
+
+        k += 1
+        target = targets2.slice(k,k+1)
+
+        document.getElementById("target").innerHTML = target
+        check_button.disabled = true
+
+    }
+</script>
+
+
+{% endblock %}
+

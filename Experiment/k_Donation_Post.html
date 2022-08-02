@@ -1,0 +1,18 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+Donation
+{% endblock %}
+
+{% block content %}
+
+<p> You can now decide what share of your earnings from Part 2 would you donate to charity. If after the donation your earnings from Part 2 exceed {{C.GBP_threshold}} GBP, you will receive a bonus of {{C.bonus_amount}} GBP.</p>
+<p> Below you can enter any number between 0% (donate nothing) and 100% (donate all). By clicking "Calculate", you can see the donation amount given your earnings in Part 2.</p>
+
+{{formfield "donate_post_share"}}
+
+<div class="button-row">
+    <button class="otree-btn-next btn btn-primary">{{C.button_next}}</button>
+</div>
+{% endblock %}

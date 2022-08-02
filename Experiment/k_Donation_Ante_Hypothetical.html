@@ -1,0 +1,29 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+Donation Hypothetical
+{% endblock %}
+
+{% block content %}
+<p> <i>If you were to decide now</i>, what share of your earnings from Part 2 would you donate to the charity? If after the donation your earnings from Part 2 exceed {{C.GBP_threshold}} GBP, you would receive a bonus of {{C.bonus_amount}} GBP.</p>
+
+{{if treatment == 1}}
+    Below you can enter any number between 0% (donate nothing) and 100% (donate all).
+{{else}}
+    Below you can enter any donation amount starting from 0.00 GBP (donate nothing) to {{player.earnings_P2}}
+{{endif}}
+
+<p><i>It is a hypothetical decision and will not affect your donation or your earnings.</i></p>
+
+{{ if treatment == 1}}
+    {{formfield "donate_ante_share_hypo"}}
+{{else}}
+    {{formfield "donate_ante_abs_hypo"}}
+{{endif}}
+
+
+<div class="button-row">
+    <button class="otree-btn-next btn btn-primary">{{C.button_next}}</button>
+</div>
+{% endblock %}
