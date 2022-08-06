@@ -1,0 +1,38 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+Feedback
+{% endblock %}
+
+{% block content %}
+<p> Thank you for taking part in the study. Here is overview of your earnings. </p>
+<p> You receive a participation fee of {{C.participation_pay}} GBP. </p>
+<p> In Part 1, you solved {{player.nr_correct_1}} tasks and receive {{player.P1_GBP}} GBP. </p>
+<p> In Part 2, you solved {{player.nr_correct_2}} tasks. </p>
+<p> You chose to donate
+{{if treatment == 2}}
+    {{player.donate_ante_abs}}
+{{else}}
+    {{if treatment == 1}}
+        {{player.donate_ante_share}}
+    {{else}}
+        {{player.donate_post_share}}
+    {{endif}}
+{{endif}}
+    of your earnings from Part 2 to charity. Therefore for Part 2, you receive {{player.P2_GBP}} GBP yourself and {{player.don_amount}} will be donated to charity at the end of the study. </p>
+<p> {{player.don_amount}} will be matched therefore for your partiipation in the study. The charity will receive {{charity_receives}}.</p>
+<p>  To receive the bonus of {{C.bonus_amount}} GBP, you had to earn at least {{C.GBP_threshold}} in Part 2. As you earned {{player.P2_GBP}} you do
+{{if player.bonus == 0}}
+    not
+{{endif}}
+receive the bonus.
+</p>
+<p> In summary, for today's study you earned {{player.total_earnings}}. For your participation in the study the charity will receive {{charity_receives}} GBP.</p>
+<p> The payment will be administered via Prolific within 4 working days. </p>
+<p> Please click "Complete" to finish the study and return to Prolific. </p>
+
+<div class="button-row">
+    <a class="otree-btn-next btn btn-primary" href="https://app.prolific.co/submissions/complete?cc=82243E2E" role="button">Complete</a>
+</div>
+{% endblock %}

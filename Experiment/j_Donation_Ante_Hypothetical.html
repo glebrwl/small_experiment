@@ -6,12 +6,17 @@ Donation Hypothetical
 {% endblock %}
 
 {% block content %}
+
+<div id="Result">
+    <p> In Part 2, you solved {{player.nr_correct_2}} screens correctly. </p>
+</div>
+
 <p> <i>If you were to decide now</i>, what share of your earnings from Part 2 would you donate to the charity? If after the donation your earnings from Part 2 exceed {{C.GBP_threshold}} GBP, you would receive a bonus of {{C.bonus_amount}} GBP.</p>
 
 {{if treatment == 1}}
     Below you can enter any number between 0% (donate nothing) and 100% (donate all).
 {{else}}
-    Below you can enter any donation amount starting from 0.00 GBP (donate nothing) to {{player.earnings_P2}}
+    Below you can enter any donation amount starting from 0.00 GBP (donate nothing) to {{player.earnings_P2}} GBP.
 {{endif}}
 
 <p><i>It is a hypothetical decision and will not affect your donation or your earnings.</i></p>
