@@ -5,23 +5,8 @@ import itertools
 import random
 import pathlib
 
-
-# ----------------------------------------------------------------------------
-# ----------------------------------------------------------------------------
-# ----------------------------------------------------------------------------
-# FUNCTIONS
-def read_tasks(file):
-    with open(__name__ + file, 'r') as read_obj:
-        csv_reader = reader(read_obj)
-        list_of_rows = list(csv_reader)
-    return list_of_rows
-
-# ----------------------------------------------------------------------------
-# ----------------------------------------------------------------------------
-# ----------------------------------------------------------------------------
-
 class C(BaseConstants):
-    answertime = 180
+    answertime = 10                             # time given to perform
     bonus_amount = 10000                        # Specify bonus amount here
     button_next = 'Continue'
     charity_name = 'the Feast of Saint Patrick' #Specify Charity name here
@@ -30,19 +15,11 @@ class C(BaseConstants):
     NAME_IN_URL = 'donations_experiment'
     not_defined = -1
     NUM_ROUNDS = 1
-    # num_questions = 60                      # Tasks: number of tasks in each file
     participation_pay = 5
-    piece_rate = 0.1                        # Payment per correct answer
+    piece_rate = 0.1                            # Payment per correct answer
     PLAYERS_PER_GROUP = None
-    round_time = 3
+    round_time = answertime//60
     study_time = 10
-    # Tasks related files:
-    # questions1 = read_tasks('/z_tasks1.csv')
-    # questions2 = read_tasks('/z_tasks2.csv')
-    # targets1 = read_tasks('/z_targets1.csv')
-    # targets2 = read_tasks('/z_targets2.csv')
-    # answers1 = read_tasks('/z_pairs1.csv')
-    # answers2 = read_tasks('/z_pairs2.csv')
 
 class Subsession(BaseSubsession):
     pass
@@ -67,52 +44,52 @@ class Player(BasePlayer):
     q_comprehension_screen_5 = models.IntegerField(choices = [[1, 'True'], [0, 'False']],
                                                    widget = widgets.RadioSelectHorizontal)
     #Donations decisions:
-    donate_ante_abs = models.IntegerField(min=0,
-                                          max=C.max_pay,
-                                          label="How much do you want to donate to the charity from your upcoming earnings in Part 2?")
-    donate_ante_abs_hypo = models.IntegerField(min=0,
-                                           max=C.max_pay,
-                                           label="How much would you hypothetically donate to the charity from your earnings in Part 2?")
-    donate_ante_share = models.IntegerField(min=0,
-                                            max=100,
-                                            label="What share of your upcoming earnings from Part 2 do you want to donate to the charity?")
-    donate_ante_share_hypo = models.IntegerField(min=0,
-                                            max=100,
-                                            label="What share of your earnings from Part 2 would you hypothetically donate to the charity?")
-    donate_post_hypo = models.IntegerField(min=0,
-                                           max=100,
-                                           label="What share of your upcoming earnings from Part 2 do you want to donate to the charity?")
-    donate_post_share = models.IntegerField(min=0,
-                                           max=100,
-                                           label="What share of your upcoming earnings from Part 2 do you want to donate to the charity?")
+    donate_ante_abs = models.IntegerField(min = 0,
+                                          max = C.max_pay,
+                                          label = "How much do you want to donate to the charity from your upcoming earnings in Part 2?")
+    donate_ante_abs_hypo = models.IntegerField(min = 0,
+                                               max = C.max_pay,
+                                               label = "")
+    donate_ante_share = models.IntegerField(min = 0,
+                                            max = 100,
+                                            label = "What share of your upcoming earnings from Part 2 do you want to donate to the charity?")
+    donate_ante_share_hypo = models.IntegerField(min = 0,
+                                                 max = 100,
+                                                 label = "")
+    donate_post_hypo = models.IntegerField(min = 0,
+                                           max = 100,
+                                           label = "What share of your upcoming earnings from Part 2 do you want to donate to the charity?")
+    donate_post_share = models.IntegerField(min = 0,
+                                            max = 100,
+                                            label = "")
     subjective_risk = models.IntegerField(initial = -1)
     #Questionnaire fields:
-    q_don_decision = models.LongStringField()
-    ##Demographics and General:
-    q_age = models.IntegerField(label = 'How old are you?', min = 13, max = 99)
-    q_sex = models.StringField(
-        choices = [[1, 'Female'], [2, 'Male']],
-        label = 'What is your sex?',
-        widget = widgets.RadioSelect)
-    q_uni = models.StringField(choices = [[1, 'Yes'], [2, 'No']],
-                             label = 'Were you a university student at some point in time, including current enrollment?',
-                             widget = widgets.RadioSelect)
-    q_subject = models.StringField(
-        choices=[[1, 'Humanities'], [2, 'Business and Economics'],
-                 [3, 'Other Social Sciences'], [4, 'Engineering and Computer Science'], [5, 'Life Sciences'], [
-                     6, 'Cognitive Science'], [7, 'Other Natural Sciences and Math'], [8, 'Law']],
-        label="Which of the following categories best fits the subject you studied?",
-        initial=0,
-        blank=True)
-    q_employment = models.StringField(
-        choices=[[1, 'Full-Time'],
-                 [2, 'Part-Time'], [3, 'Self-employed'], [4, 'No']],
-        label="Are you currently employed?",
-        widget=widgets.RadioSelectHorizontal)
-    q_occupation = models.StringField(
-        initial="",
-        label="What is your current occupation?",
-        blank=True)
+    # q_don_decision = models.LongStringField()
+    # ##Demographics and General:
+    # q_age = models.IntegerField(label = 'How old are you?', min = 13, max = 99)
+    # q_sex = models.StringField(
+    #     choices = [[1, 'Female'], [2, 'Male']],
+    #     label = 'What is your sex?',
+    #     widget = widgets.RadioSelect)
+    # q_uni = models.StringField(choices = [[1, 'Yes'], [2, 'No']],
+    #                          label = 'Were you a university student at some point in time, including current enrollment?',
+    #                          widget = widgets.RadioSelect)
+    # q_subject = models.StringField(
+    #     choices=[[1, 'Humanities'], [2, 'Business and Economics'],
+    #              [3, 'Other Social Sciences'], [4, 'Engineering and Computer Science'], [5, 'Life Sciences'], [
+    #                  6, 'Cognitive Science'], [7, 'Other Natural Sciences and Math'], [8, 'Law']],
+    #     label="Which of the following categories best fits the subject you studied?",
+    #     initial=0,
+    #     blank=True)
+    # q_employment = models.StringField(
+    #     choices=[[1, 'Full-Time'],
+    #              [2, 'Part-Time'], [3, 'Self-employed'], [4, 'No']],
+    #     label="Are you currently employed?",
+    #     widget=widgets.RadioSelectHorizontal)
+    # q_occupation = models.StringField(
+    #     initial="",
+    #     label="What is your current occupation?",
+    #     blank=True)
     # q_political_spect = models.IntegerField(initial=-1)
 
 def creating_session(subsession):
@@ -122,16 +99,13 @@ def creating_session(subsession):
         participant = player.participant
         participant.Prolific_ID = player.participant.label
         participant.treatment = next(treated)
-        # participant.relevant_guess = random.choice([1, 2, 3])
-        # participant.nr_correct_1 = 0
-        # participant.nr_correct_2 = 0
 
 # ----------------------------------------------------------------------------
 # ----------------------------------------------------------------------------
 # ----------------------------------------------------------------------------
 # FUNCTIONS
 def player_get_payment_info(player):
-    return player.nr_correct_2 * C.piece_rate + C.participation_pay
+    return player.nr_correct_2 * C.piece_rate
 
 def player_store_data(player):
     player.participant.nr_correct_1 = player.nr_correct_1
@@ -174,7 +148,9 @@ class b_Instructions_P1(Page):
     @staticmethod
     def error_message(player, values):
         if values['q_comprehension_screen_2_1'] == 0:
-            return "The answer is incorrect. Please consult the instructions and try again."
+            return 'The answer is incorrect. Please consult the instructions and try again.'
+        if values['q_comprehension_screen_2_2'] == 1:
+            return 'The answer is incorrect. Please consult the instructions and try again.'
     @staticmethod
     def vars_for_template(player: Player):
         player.Prolific_ID = player.participant.label
@@ -189,7 +165,7 @@ class c_Before_Task_P1(Page):
         player.Prolific_ID = player.participant.label
 
 class d_Task_P1(Page):
-    timeout_seconds = 10
+    timeout_seconds = C.answertime
     form_model = 'player'
     form_fields = ['nr_correct_1']
 
@@ -264,7 +240,7 @@ class h_Before_Task_P2(Page):
     pass
 
 class i_Task_P2(Page):
-    timeout_seconds = 10
+    timeout_seconds = C.answertime
     form_model = 'player'
     form_fields = ['nr_correct_2']
 
@@ -303,23 +279,23 @@ class k_Donation_Post(Page):
         return dict(treatment = player.participant.treatment
                     )
 
-class l_Questionnaire(Page):
-    form_model = 'player'
-    form_fields = ['q_don_decision',
-                   'q_age',
-                   'q_sex',
-                   'q_uni',
-                   'q_subject',
-                   'q_employment',
-                   'q_occupation']
+# class l_Questionnaire(Page):
+#     form_model = 'player'
+#     form_fields = ['q_don_decision',
+#                    'q_age',
+#                    'q_sex',
+#                    'q_uni',
+#                    'q_subject',
+#                    'q_employment',
+#                    'q_occupation']
     # @staticmethod
     # def is_displayed(player: Player):
     #     # Only show on the last round
     #     return player.round_number == 1
-    def before_next_page(player: Player, timeout_happened):
-        if player.q_uni == 'No':
-            player.q_subject = -1
-# ----------------------------------------------------------------------------
+#     def before_next_page(player: Player, timeout_happened):
+#         if player.q_uni == 'No':
+#             player.q_subject = -1
+# # ----------------------------------------------------------------------------
 # ----------------------------------------------------------------------------
 # ----------------------------------------------------------------------------
 # PAGE SEQUENCE
