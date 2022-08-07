@@ -6,7 +6,7 @@ SESSION_CONFIGS = [
         name = 'Experiment',
         display_name = 'Donations Experiment',
         app_sequence = ['Experiment'],
-        num_demo_participants = 4
+        num_demo_participants = 8
     )
 ]
 
@@ -30,14 +30,7 @@ LANGUAGE_CODE = 'en'
 REAL_WORLD_CURRENCY_CODE = 'GBP'
 USE_POINTS = False
 
-ROOMS = [
-    # dict(
-    #     name='econ101',
-    #     display_name='Econ 101 class',
-    #     participant_label_file='_rooms/econ101.txt',
-    # ),
-    # dict(name='live_demo', display_name='Room for live demo (no participant labels)'),
-]
+ROOMS = []
 
 ADMIN_USERNAME = 'admin'
 # for security, best to set admin password in an environment variable
@@ -47,7 +40,6 @@ DEMO_PAGE_INTRO_HTML = """
 Here are some oTree games.
 """
 
-
 SECRET_KEY = '8575747310029'
 
 INSTALLED_APPS = ['otree']
@@ -55,24 +47,7 @@ INSTALLED_APPS = ['otree']
 PARTICIPANT_FIELDS = [
     # overal fields
     'treatment',
-    'quiztype',
     'Prolific_ID',
-    'nr_correct_part_1',
-    'trust_timeout_happened',
-    'confidence_outcome',
-    'nr_correct_part_2',
-    'advice_sought',
-    'base_payoff',
-    'q_part1_payoff',
-    'total_payoff',
-    'max_payoff',
-    'confidence_payoff',
-    'confidence_lottery_payoff',
-    'q_part2_payoff',
-    'advice_payoff',
-    'bonus_payoff',
-    'relevant_guess',
-    'gk_part'
-    # Questionnaire Items
-
+    'nr_correct_1',
+    'nr_correct_2'
 ]

@@ -51,11 +51,9 @@
     </p>
 </div>
 
-
 <script type="text/javascript">
     var score = 0
     var task1_score = document.getElementById("Task1Correct");
-
     var matrices1 = [38,44,89,67,23,39,12,96,17,
                      38,86,17,70,31,53,76,68,22,
                      17,28,64,28,69,84,18,53,21,
@@ -89,7 +87,6 @@
 
     var j = 0
 
-
     var num1 = matrices1.slice(j,j+1)
     var num2 = matrices1.slice(j+1,j+2)
     var num3 = matrices1.slice(j+2,j+3)
@@ -99,7 +96,6 @@
     var num7 = matrices1.slice(j+6,j+7)
     var num8 = matrices1.slice(j+7,j+8)
     var num9 = matrices1.slice(j+8,j+9)
-
 
     document.getElementById("num1").innerHTML = num1
     document.getElementById("num2").innerHTML = num2
@@ -136,52 +132,58 @@
 
     function getChecked() {
         var checked = [];
-
         for (var i = 0; i < checkboxes.length; i++) {
             var checkbox = checkboxes[i];
             if (checkbox.checked) checked.push(checkbox.value);
-         }
-
-         return checked;
+        }
+        return checked;
      }
 
+    function cbChange(obj) {
+        var instate=(obj.checked);
+        var submitted = getChecked();
+        if (instate && submitted.length > 2) {
+            obj.checked = false;
+            alert('You are only allowed to pick 2 numbers to sum up to the target number.')
+        }
+        else if (instate) {
+            obj.checked = true
+        }
+        var submitted = getChecked();
 
-
-     function cbChange(obj) {
-       var instate=(obj.checked);
-       var submitted = getChecked();
-       if (submitted.length != 2) {
-          check_button.disabled = true
-       }
-       else {
-        check_button.disabled = false
-       }
-
-       if(instate)obj.checked = true;
-     }
+        if (submitted.length != 2) {
+            check_button.disabled = true
+        }
+        else {
+            check_button.disabled = false
+        }
+    }
 
 
 
     check_button.addEventListener("click", function() {
        var checkedraw = getChecked();
        var checkedint = checkedraw.map(Number);
-
-       var sum_answers = checkedint.reduce(function(a, b) { return a +        b; }, 0);
-
-       if (sum_answers == target){
-            score++;
-        }
-
-        task1_score.value = score; //Input to the data
-
-        new_task()
+       var sum_answers = checkedint.reduce(function(a, b) { return a + b; }, 0);
+       if (sum_answers == target) {
+           score++;
+       }
+       task1_score.value = score;
+       if (sum_answers == target) {
+           new_task(move_on = 'Yes')
+       }
+       else {
+           new_task(move_on = 'No')
+       }
     }
    );
 
 
-    function new_task() {
-        j += 9
-
+    function new_task(move_on = 'Yes') {
+        if (move_on == 'Yes') {
+            j += 9;
+            k += 1;
+        }
 
         var num1 = matrices1.slice(j,j+1)
         var num2 = matrices1.slice(j+1,j+2)
@@ -223,8 +225,7 @@
         document.getElementById("cell8").value = num8
         document.getElementById("cell9").value = num9
 
-        k += 1
-        target = targets1.slice(k,k+1)
+        target = targets1.slice(k, k+1)
 
         document.getElementById("target").innerHTML = target
         check_button.disabled = true
