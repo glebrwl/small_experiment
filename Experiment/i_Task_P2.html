@@ -4,13 +4,34 @@
 {% block title %}Task 1. Part 2: Finding the 2 Numbers forming a sum{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="{% 'task_style.css' %}">
 
 <h5><strong>Please find the two numbers that sum up to <i id="target"></i></strong></h5>
 
+<style>
+    table {
+        width: 60%;
+        margin-left:auto;
+        margin-right:auto;
+        border: 2px solid rgb(36, 126, 243);
+        /*border-collapse: collapse;*/
+    }
+    th, td {
+        text-align: center;
+        height: 50px;
+        border: 2px solid rgb(36, 126, 243);
+        border-collapse: collapse;
+    }
+    td:hover {
+        background-color: azure;
+    }
+    .buttonHolder{
+        text-align: center;
+    }
+</style>
+
 <div class="QuestionDIV">
-    <table class="Niederle">
-        <tr style="outline: thin solid">
+    <table>
+        <tr>
             <td> <input type="checkbox" id="cell1" name="number" onchange="cbChange(this)">
                  <label for="cell1" id="num1"></label>
             </td>
@@ -21,7 +42,7 @@
                  <label for="cell3" id="num3"></label>
             </td>
         </tr>
-        <tr style="outline: thin solid">
+        <tr>
             <td> <input type="checkbox" id="cell4" name="number" onchange="cbChange(this)">
                  <label for="cell4" id="num4"></label>
             </td>
@@ -32,7 +53,7 @@
                  <label for="cell6" id="num6"></label>
             </td>
         </tr>
-        <tr style="outline: thin solid">
+        <tr>
             <td> <input type="checkbox" id="cell7" name="number" onchange="cbChange(this)">
                  <label for="cell7" id="num7"></label>
             </td>
@@ -45,9 +66,10 @@
         </tr>
     </table>
     <p>
-        <input type="submit" id="check_button" value="Submit" >
-        <input type="hidden" name="nr_correct_2" id="Task2Correct" />
-        <i>   </i>
+        <div class="buttonHolder">
+            <input type="submit" id="check_button" value="Submit" >
+            <input type="hidden" name="nr_correct_2" id="Task2Correct" />
+        </div>
     </p>
 </div>
 
@@ -147,55 +169,59 @@
     var check_button = document.getElementById("check_button");
     check_button.disabled = true
 
-
     function getChecked() {
         var checked = [];
-
         for (var i = 0; i < checkboxes.length; i++) {
             var checkbox = checkboxes[i];
             if (checkbox.checked) checked.push(checkbox.value);
-         }
-
-         return checked;
+        }
+        return checked;
      }
 
+    function cbChange(obj) {
+        var instate = (obj.checked);
+        var submitted = getChecked();
+        if (instate && submitted.length > 2) {
+            obj.checked = false;
+            alert('You are only allowed to pick 2 numbers to sum up to the target number.')
+        }
+        else if (instate) {
+            obj.checked = true
+        }
+        var submitted = getChecked();
 
-
-     function cbChange(obj) {
-       var instate=(obj.checked);
-       var submitted = getChecked();
-       if (submitted.length != 2) {
-          check_button.disabled = true
-       }
-       else {
-        check_button.disabled = false
-       }
-
-       if(instate)obj.checked = true;
-     }
-
-
+        if (submitted.length != 2) {
+            check_button.disabled = true
+        }
+        else {
+            check_button.disabled = false
+        }
+    }
 
     check_button.addEventListener("click", function() {
        var checkedraw = getChecked();
        var checkedint = checkedraw.map(Number);
-
-       var sum_answers = checkedint.reduce(function(a, b) { return a +        b; }, 0);
-
-       if (sum_answers == target){
-            score++;
-        }
-
-        task2_score.value = score; //Input to the data
-
-        new_task()
+       var sum_answers = checkedint.reduce(function(a, b) { return a + b; }, 0);
+       if (sum_answers == target) {
+           score++;
+       }
+       task2_score.value = score;
+       if (sum_answers == target) {
+           new_task(move_on = 'Yes')
+       }
+       else {
+           alert('Chosen numbers do not sum up to the target number. Try again.')
+           new_task(move_on = 'No')
+       }
     }
    );
 
 
-    function new_task() {
-        j += 9
-
+    function new_task(move_on = 'Yes') {
+        if (move_on == 'Yes') {
+            j += 9;
+            k += 1;
+        }
 
         var num1 = matrices2.slice(j,j+1)
         var num2 = matrices2.slice(j+1,j+2)
@@ -237,7 +263,6 @@
         document.getElementById("cell8").value = num8
         document.getElementById("cell9").value = num9
 
-        k += 1
         target = targets2.slice(k,k+1)
 
         document.getElementById("target").innerHTML = target

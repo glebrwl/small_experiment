@@ -2,7 +2,7 @@ from otree.api import *
 import itertools
 
 class C(BaseConstants):
-    answertime = 40                             # Time given to perform tasks
+    answertime = 1040                             # Time given to perform tasks
     bonus_amount = 10000                        # Specify bonus amount here
     button_next = 'Continue'
     charity_name = 'the Feast of Saint Patrick' # Specify the Charity name here
@@ -222,6 +222,14 @@ class g_Subjective_Risk(Page):
         return dict(treatment = player.participant.treatment
                     )
 
+class g2_Subjective_Risk2(Page):
+    form_model = 'player'
+    form_fields = ['subjective_risk']
+    @staticmethod
+    def vars_for_template(player: Player):
+        return dict(treatment = player.participant.treatment
+                    )
+
 class h_Before_Task_P2(Page):
     pass
 
@@ -309,7 +317,8 @@ page_sequence = [a_Welcome,
                  e_Results_P1_Inst_P2,
                  f_Donation_Ante,
                  f_Donation_Post_Hypothetical,
-                 g_Subjective_Risk,
+                 # g_Subjective_Risk,
+                 g2_Subjective_Risk2,
                  h_Before_Task_P2,
                  i_Task_P2,
                  j_Donation_Ante_Hypothetical,

@@ -4,13 +4,34 @@
 {% block title %}Task 1. Part 1: Finding the 2 Numbers forming a sum{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="{% 'task_style.css' %}">
 
 <h5><strong>Please find the two numbers that sum up to <i id="target"></i></strong></h5>
 
+<style>
+    table {
+        width: 60%;
+        margin-left:auto;
+        margin-right:auto;
+        border: 2px solid rgb(36, 126, 243);
+        /*border-collapse: collapse;*/
+    }
+    th, td {
+        text-align: center;
+        height: 50px;
+        border: 2px solid rgb(36, 126, 243);
+        border-collapse: collapse;
+    }
+    td:hover {
+        background-color: azure;
+    }
+    .buttonHolder{
+        text-align: center;
+    }
+</style>
+
 <div class="QuestionDIV">
-    <table class="Niederle">
-        <tr style="outline: thin solid">
+    <table>
+        <tr>
             <td> <input type="checkbox" id="cell1" name="number" onchange="cbChange(this)">
                  <label for="cell1" id="num1"></label>
             </td>
@@ -21,7 +42,7 @@
                  <label for="cell3" id="num3"></label>
             </td>
         </tr>
-        <tr style="outline: thin solid">
+        <tr>
             <td> <input type="checkbox" id="cell4" name="number" onchange="cbChange(this)">
                  <label for="cell4" id="num4"></label>
             </td>
@@ -32,7 +53,7 @@
                  <label for="cell6" id="num6"></label>
             </td>
         </tr>
-        <tr style="outline: thin solid">
+        <tr>
             <td> <input type="checkbox" id="cell7" name="number" onchange="cbChange(this)">
                  <label for="cell7" id="num7"></label>
             </td>
@@ -45,9 +66,10 @@
         </tr>
     </table>
     <p>
-        <input type="submit" id="check_button" value="Submit" >
-        <input type="hidden" name="nr_correct_1" id="Task1Correct" />
-        <i>   </i>
+        <div class="buttonHolder">
+            <input type="submit" id="check_button" value="Submit" >
+            <input type="hidden" name="nr_correct_1" id="Task1Correct" />
+        </div>
     </p>
 </div>
 
@@ -129,7 +151,6 @@
     var check_button = document.getElementById("check_button");
     check_button.disabled = true
 
-
     function getChecked() {
         var checked = [];
         for (var i = 0; i < checkboxes.length; i++) {
@@ -140,7 +161,7 @@
      }
 
     function cbChange(obj) {
-        var instate=(obj.checked);
+        var instate = (obj.checked);
         var submitted = getChecked();
         if (instate && submitted.length > 2) {
             obj.checked = false;
@@ -173,6 +194,7 @@
            new_task(move_on = 'Yes')
        }
        else {
+           alert('Chosen numbers do not sum up to the target number. Try again.')
            new_task(move_on = 'No')
        }
     }

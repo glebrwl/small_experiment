@@ -1,0 +1,75 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+Subjective Risk
+{% endblock %}
+
+{% block content %}
+
+
+<style>
+        .mgslider-wrapper {
+            border-spacing: 10px;
+        }
+        .mgslider-limit {
+            width: 10%;
+            min-width: 75px;
+            height: 40px;
+            margin: 100px;
+            text-align: center;
+            background: #eee;
+            border: 1px solid #888;
+        }
+        .mgslider-limit, .mgslider-value {
+            font-variant-numeric: tabular-nums;
+        }
+        .mgslider-before {
+            height: 16px;
+            width: 100%;
+            background: #1e5bff;
+        }
+    </style>
+
+
+
+</script>
+
+<style>
+.hide { display: none; }
+</style>
+
+
+<p> In your opinion, how likely are you to earn {{C.GBP_threshold}} in Part 2, given your
+
+{{ if treatment == 3}}
+    hypothetical
+{{endif}}
+
+donation decisions? Please indicate your chance on a scale below where 0 means no chance of reaching threshold and 100 means that it is 100% certain that you will reach the threshold. </p>
+
+
+<p style="text-align:left;">
+    very masculine
+    <span style="float:right;">
+       very feminine
+    </span>
+</p>
+
+<div id="slider11"></div>
+{{ formfield_errors 'subjective_risk'}}
+
+
+<script src="{{ static 'mgslider.js' }}"></script>
+<script>
+        $(document).ready(function (event) {
+            slider11 = new mgslider("subjective_risk", 0, 100, 1);
+            slider11.print(document.getElementById("slider11"));
+        });
+    </script>
+
+<div class="button-row">
+    <button class="otree-btn-next btn btn-primary">{{C.button_next}}</button>
+</div>
+
+{% endblock %}
