@@ -7,6 +7,10 @@ Donation
 
 {% block content %}
 
+<div id="Result">
+    <p> In Part 2, you solved {{player.nr_correct_2}} screens correctly. </p>
+</div>
+
 <p> You can now decide what share of your earnings from Part 2 would you donate to charity. If after the donation your earnings from Part 2 exceed {{C.GBP_threshold}} GBP, you will receive a bonus of {{C.bonus_amount}} GBP.</p>
 <p> Below you can enter any number between 0% (donate nothing) and 100% (donate all). By clicking "Calculate", you can see the donation amount given your earnings in Part 2.</p>
 

@@ -1,48 +1,21 @@
 from otree.api import *
-from otree.api import *
-from csv import reader
 import itertools
-import random
-import pathlib
-
-
-# ----------------------------------------------------------------------------
-# ----------------------------------------------------------------------------
-# ----------------------------------------------------------------------------
-# FUNCTIONS
-def read_tasks(file):
-    with open(__name__ + file, 'r') as read_obj:
-        csv_reader = reader(read_obj)
-        list_of_rows = list(csv_reader)
-    return list_of_rows
-
-# ----------------------------------------------------------------------------
-# ----------------------------------------------------------------------------
-# ----------------------------------------------------------------------------
 
 class C(BaseConstants):
-    answertime = 180
+    answertime = 1040                             # Time given to perform tasks
     bonus_amount = 10000                        # Specify bonus amount here
     button_next = 'Continue'
-    charity_name = 'the Feast of Saint Patrick' #Specify Charity name here
-    GBP_threshold = 10000.99                    #Specify minimum GBP threshold for receiving bonus_amount
+    charity_name = 'the Feast of Saint Patrick' # Specify the Charity name here
+    GBP_threshold = 0.1                         # Specify minimum GBP threshold for receiving bonus_amount
     max_pay = 100000
     NAME_IN_URL = 'donations_experiment'
     not_defined = -1
     NUM_ROUNDS = 1
-    # num_questions = 60                      # Tasks: number of tasks in each file
-    participation_pay = 5
-    piece_rate = 0.1                        # Payment per correct answer
+    participation_pay = 5                       # Payment for participation
+    piece_rate = 0.1                            # Payment per correct answer
     PLAYERS_PER_GROUP = None
-    round_time = 3
+    round_time = answertime//60
     study_time = 10
-    # Tasks related files:
-    # questions1 = read_tasks('/z_tasks1.csv')
-    # questions2 = read_tasks('/z_tasks2.csv')
-    # targets1 = read_tasks('/z_targets1.csv')
-    # targets2 = read_tasks('/z_targets2.csv')
-    # answers1 = read_tasks('/z_pairs1.csv')
-    # answers2 = read_tasks('/z_pairs2.csv')
 
 class Subsession(BaseSubsession):
     pass
@@ -52,11 +25,18 @@ class Group(BaseGroup):
 
 class Player(BasePlayer):
     Prolific_ID = models.LongStringField()
+    treatment = models.IntegerField(initial = 0)
     #Correct answers in Part 1 and Part 2:
     nr_correct_1 = models.IntegerField(initial = -1)
     nr_correct_2 = models.IntegerField(initial = -1)
     #Payment info:
+    earnings_P1 = models.FloatField(initial=-1)
     earnings_P2 = models.FloatField(initial = -1)
+    P1_GBP = models.FloatField(initial=-1)
+    P2_GBP = models.FloatField(initial=-1)
+    don_amount = models.FloatField(initial=-1)
+    bonus = models.FloatField(initial = 0)
+    total_earnings = models.FloatField(initial = 0)
     #Comprehension Questions:
     q_comprehension_screen_2_1 = models.IntegerField(choices = [[1, 'True'], [0, 'False']],
                                                      label = 'In each screen, there are only two numbers that sum up to the target number.',
@@ -67,53 +47,52 @@ class Player(BasePlayer):
     q_comprehension_screen_5 = models.IntegerField(choices = [[1, 'True'], [0, 'False']],
                                                    widget = widgets.RadioSelectHorizontal)
     #Donations decisions:
-    donate_ante_abs = models.IntegerField(min=0,
-                                          max=C.max_pay,
-                                          label="How much do you want to donate to the charity from your upcoming earnings in Part 2?")
-    donate_ante_abs_hypo = models.IntegerField(min=0,
-                                           max=C.max_pay,
-                                           label="How much would you hypothetically donate to the charity from your earnings in Part 2?")
-    donate_ante_share = models.IntegerField(min=0,
-                                            max=100,
-                                            label="What share of your upcoming earnings from Part 2 do you want to donate to the charity?")
-    donate_ante_share_hypo = models.IntegerField(min=0,
-                                            max=100,
-                                            label="What share of your earnings from Part 2 would you hypothetically donate to the charity?")
-    donate_post_hypo = models.IntegerField(min=0,
-                                           max=100,
-                                           label="What share of your upcoming earnings from Part 2 do you want to donate to the charity?")
-    donate_post_share = models.IntegerField(min=0,
-                                           max=100,
-                                           label="What share of your upcoming earnings from Part 2 do you want to donate to the charity?")
+    donate_ante_abs = models.FloatField(min = 0,
+                                          max = C.max_pay,
+                                          label = "")
+    donate_ante_abs_hypo = models.FloatField(min = 0,
+                                             label = "")
+    donate_ante_share = models.IntegerField(min = 0,
+                                            max = 100,
+                                            label = "")
+    donate_ante_share_hypo = models.IntegerField(min = 0,
+                                                 max = 100,
+                                                 label = "")
+    donate_post_hypo = models.IntegerField(min = 0,
+                                           max = 100,
+                                           label = "")
+    donate_post_share = models.IntegerField(min = 0,
+                                            max = 100,
+                                            label = "")
     subjective_risk = models.IntegerField(initial = -1)
-    #Questionnaire fields:
-    q_don_decision = models.LongStringField()
-    ##Demographics and General:
-    q_age = models.IntegerField(label = 'How old are you?', min = 13, max = 99)
-    q_sex = models.StringField(
-        choices = [[1, 'Female'], [2, 'Male']],
-        label = 'What is your sex?',
-        widget = widgets.RadioSelect)
-    q_uni = models.StringField(choices = [[1, 'Yes'], [2, 'No']],
-                             label = 'Were you a university student at some point in time, including current enrollment?',
-                             widget = widgets.RadioSelect)
-    q_subject = models.StringField(
-        choices=[[1, 'Humanities'], [2, 'Business and Economics'],
-                 [3, 'Other Social Sciences'], [4, 'Engineering and Computer Science'], [5, 'Life Sciences'], [
-                     6, 'Cognitive Science'], [7, 'Other Natural Sciences and Math'], [8, 'Law']],
-        label="Which of the following categories best fits the subject you studied?",
-        initial=0,
-        blank=True)
-    q_employment = models.StringField(
-        choices=[[1, 'Full-Time'],
-                 [2, 'Part-Time'], [3, 'Self-employed'], [4, 'No']],
-        label="Are you currently employed?",
-        widget=widgets.RadioSelectHorizontal)
-    q_occupation = models.StringField(
-        initial="",
-        label="What is your current occupation?",
-        blank=True)
-    # q_political_spect = models.IntegerField(initial=-1)
+    # k_Questionnaire:
+    q_age = models.IntegerField(min = 18,
+                                max = 99,
+                                label = "How old are you?")
+    q_gender = models.StringField(choices = [['Female', 'Female'], ['Male', 'Male']],
+                                  label = "What is your sex?",
+                                  widget = widgets.RadioSelectHorizontal)
+    q_Alevel = models.BooleanField( choices = [['Yes', 'Yes'], ['No', 'No']],
+                                    label = "Have you completed A levels or an equivalent level of education that qualifies you for university studies?",
+                                    widget = widgets.RadioSelectHorizontal)
+    q_degree = models.BooleanField(choices = [['Yes', 'Yes'], ['No', 'No']],
+                                   label = "Were you a university student at some point in time during your life, including current enrollment?",
+                                   widget = widgets.RadioSelectHorizontal)
+    q_subject = models.StringField(choices = [[1, 'Humanities'], [2, 'Business and Economics'],
+                                              [3, 'Other Social Sciences'], [4, 'Engineering and Computer Science'],
+                                              [5, 'Life Sciences'], [6, 'Cognitive Science'], [7, 'Other Natural Sciences and Math'], [8, 'Law']],
+                                   label = "Which of the following categories best fits the subject you studied?",
+                                   initial = 0,
+                                   blank = True)
+    q_employment = models.StringField(choices = [['Full-Time', 'Full-Time'],
+                                                 ['Part-Time', 'Part-Time'],
+                                                 ['Self-employed', 'Self-employed'],
+                                                 ['No', 'No']],
+                                      label = "Are you currently employed?",
+                                      widget = widgets.RadioSelectHorizontal)
+    q_occupation = models.StringField(initial = "",
+                                      label = "What is your current occupation?",
+                                      blank = True)
 
 def creating_session(subsession):
     treated = itertools.cycle([1, 2, 3]) # 1 – ante_share, 2 – ante_absolute, 3 – post_share
@@ -122,37 +101,35 @@ def creating_session(subsession):
         participant = player.participant
         participant.Prolific_ID = player.participant.label
         participant.treatment = next(treated)
-        # participant.relevant_guess = random.choice([1, 2, 3])
-        # participant.nr_correct_1 = 0
-        # participant.nr_correct_2 = 0
 
 # ----------------------------------------------------------------------------
 # ----------------------------------------------------------------------------
 # ----------------------------------------------------------------------------
 # FUNCTIONS
-def player_get_payment_info(player):
-    return player.nr_correct_2 * C.piece_rate + C.participation_pay
+def player_get_earnings(player):
+    player.earnings_P1 = round(player.nr_correct_1 * C.piece_rate, 2)
+    player.earnings_P2 = round(player.nr_correct_2 * C.piece_rate, 2)
 
-def player_store_data(player):
-    player.participant.nr_correct_1 = player.nr_correct_1
-    player.participant.nr_correct_2 = player.nr_correct_2
-    dict = player.participant.dict
-    dict['nr_correct_1'] = player.nr_correct_1
-    dict['nr_correct_2'] = player.nr_correct_2
-    dict['earnings_P2'] = player.earnings_P2
+def player_calculate_payoffs(player):
+    player.P1_GBP = player.earnings_P1
+    if player.participant.treatment == 1:
+        player.P2_GBP = round(player.earnings_P2 * (1 - player.donate_ante_share/100), 2)
+        player.don_amount = round(player.earnings_P2 * player.donate_ante_share/100, 2)
+    elif player.participant.treatment == 2:
+        if donate_ante_abs >= player.earnings_P2:
+            player.P2_GBP = 0
+            player.don_amount = player.earnings_P2
+        else:
+            player.P2_GBP = player.earnings_P2 - player.donate_ante_abs
+            player.don_amount = player.donate_ante_abs
+    else:
+        player.P2_GBP = round(player.earnings_P2 * (1 - player.donate_post_share / 100), 2)
+        player.don_amount = round(player.earnings_P2 * player.donate_ante_share / 100, 2)
 
-    # print("*" * 50)
-    # print("****** Employee 1:", player.PlayerID, "has finished ******")
-    # print("*" * 50)
-    # print("*" * 50)
+    if player.P2_GBP >= C.GBP_threshold:
+        player.bonus = C.bonus_amount
 
-# def get_question_nr(player):
-#     """ Cycle through the questions, using remainder operator `%`
-#     round 1 -> q1, round 2-> q2 1, ... round 11->q1
-#     need to substract 1 first and that afterwards for the formula to work
-#     """
-#     return ((player.round_number - 1) % C.num_questions) + 1
-
+    player.total_earnings = round(C.participation_pay + player.P1_GBP + player.P2_GBP + player.bonus, 2)
 # ----------------------------------------------------------------------------
 # ----------------------------------------------------------------------------
 # ----------------------------------------------------------------------------
@@ -165,8 +142,8 @@ class a_Welcome(Page):
     @staticmethod
     def vars_for_template(player: Player):
         player.Prolific_ID = player.participant.label
-        return dict(treatment = player.participant.treatment,
-                    )
+        player.treatment = player.participant.treatment
+        return dict(treatment = player.treatment)
  #I do not know why it does not show the variable in the database, but it generates it, see welcome page.
 class b_Instructions_P1(Page):
     form_model = 'player'
@@ -174,7 +151,9 @@ class b_Instructions_P1(Page):
     @staticmethod
     def error_message(player, values):
         if values['q_comprehension_screen_2_1'] == 0:
-            return "The answer is incorrect. Please consult the instructions and try again."
+            return 'The answer is incorrect. Please consult the instructions and try again.'
+        if values['q_comprehension_screen_2_2'] == 1:
+            return 'The answer is incorrect. Please consult the instructions and try again.'
     @staticmethod
     def vars_for_template(player: Player):
         player.Prolific_ID = player.participant.label
@@ -189,7 +168,7 @@ class c_Before_Task_P1(Page):
         player.Prolific_ID = player.participant.label
 
 class d_Task_P1(Page):
-    timeout_seconds = 10
+    timeout_seconds = C.answertime
     form_model = 'player'
     form_fields = ['nr_correct_1']
 
@@ -204,7 +183,7 @@ class e_Results_P1_Inst_P2(Page):
     def vars_for_template(player: Player):
         player.Prolific_ID = player.participant.label
         return dict(treatment = player.participant.treatment,
-                    comprehension_screen_5_label = 'If after the donation, you earned more than {} in Part 2, you will receive a bonus of {} GBP. Therefore, ultimately, to receive the bonus, one need to earn in Part 2 at least {} plus the chosen donation'.format(C.GBP_threshold, C.bonus_amount, C.GBP_threshold)
+                    comprehension_screen_5_label = 'If after the donation is deducted, the earnings from Part 2 are higher than {}, one receives the bonus of {} GBP.'.format(C.GBP_threshold, C.bonus_amount)
                     )
 
 class f_Donation_Ante(Page):
@@ -223,16 +202,6 @@ class f_Donation_Ante(Page):
             return ['donate_ante_share']
         elif player.participant.treatment == 2:
             return ['donate_ante_abs']
-    # @staticmethod
-    # def error_message(player, values):
-    #     if player.participant.treatment == 1:
-    #         if values['donate_ante_share'] < 0:
-    #             return "You can not donate negative share of earnings."
-    #         elif values['donate_ante_share'] > 100:
-    #             return "You can not donate more than 100% of earnings."
-    #     elif player.participant.treatment == 2:
-    #         if values['donate_ante_abs'] < 0:
-    #             return "You can not donate negative amount of money."
 
 class f_Donation_Post_Hypothetical(Page):
     form_model = 'player'
@@ -244,15 +213,16 @@ class f_Donation_Post_Hypothetical(Page):
     def vars_for_template(player: Player):
         return dict(treatment = player.participant.treatment
                     )
-    # @staticmethod
-    # def error_message(player, values):
-    #     if player.participant.treatment == 3:
-    #         if values['donate_post_hypo'] < 0:
-    #             return "You can not donate negative share of earnings."
-    #         elif values['donate_post_hypo'] > 100:
-    #             return "You can not donate more than 100% of earnings."
 
 class g_Subjective_Risk(Page):
+    form_model = 'player'
+    form_fields = ['subjective_risk']
+    @staticmethod
+    def vars_for_template(player: Player):
+        return dict(treatment = player.participant.treatment
+                    )
+
+class g2_Subjective_Risk2(Page):
     form_model = 'player'
     form_fields = ['subjective_risk']
     @staticmethod
@@ -264,18 +234,14 @@ class h_Before_Task_P2(Page):
     pass
 
 class i_Task_P2(Page):
-    timeout_seconds = 10
+    timeout_seconds = C.answertime
     form_model = 'player'
     form_fields = ['nr_correct_2']
-
-class j_Results_P2(Page):
-    form_model = 'player'
+    @staticmethod
     def before_next_page(player, timeout_happened):
-        player.earnings_P2 = player_get_payment_info(player)
-        # player.player_store_data()
-        # player.player_export_data()
+        player_get_earnings(player)
 
-class k_Donation_Ante_Hypothetical(Page):
+class j_Donation_Ante_Hypothetical(Page):
     form_model = 'player'
     form_fields = ['donate_ante_share_hypo', 'donate_ante_abs_hypo']
     @staticmethod
@@ -291,8 +257,19 @@ class k_Donation_Ante_Hypothetical(Page):
             return ['donate_ante_share_hypo']
         elif player.participant.treatment == 2:
             return ['donate_ante_abs_hypo']
+    @staticmethod
+    def error_message(player, values):
+        if player.participant.treatment == 2:
+            if values['donate_ante_abs_hypo'] > player.earnings_P2:
+                return 'You can not enter number exceeding your earnings.'
+            if values['donate_ante_abs_hypo'] < 0:
+                return 'You can not enter negative number.'
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        player_calculate_payoffs(player)
 
-class k_Donation_Post(Page):
+
+class j_Donation_Post(Page):
     form_model = 'player'
     form_fields = ['donate_post_share']
     @staticmethod
@@ -300,25 +277,34 @@ class k_Donation_Post(Page):
         return player.participant.treatment == 3
     @staticmethod
     def vars_for_template(player: Player):
-        return dict(treatment = player.participant.treatment
-                    )
+        return dict(treatment = player.treatment)
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        player_calculate_payoffs(player)
 
-class l_Questionnaire(Page):
+class k_Questionnaire(Page):
+    # changed to Welcome base class
     form_model = 'player'
-    form_fields = ['q_don_decision',
-                   'q_age',
-                   'q_sex',
-                   'q_uni',
+    form_fields = ['q_age',
+                   'q_gender',
+                   'q_Alevel',
+                   'q_degree',
                    'q_subject',
                    'q_employment',
                    'q_occupation']
-    # @staticmethod
-    # def is_displayed(player: Player):
-    #     # Only show on the last round
-    #     return player.round_number == 1
+    @staticmethod
     def before_next_page(player: Player, timeout_happened):
-        if player.q_uni == 'No':
-            player.q_subject = -1
+        if player.q_degree == 'No':
+            player.q_subject = " Not Applicable"
+        if player.q_employment == 'No':
+            player.q_occupation = "Not Applicable"
+
+class l_Feedback(Page):
+    form_model = 'player'
+    @staticmethod
+    def vars_for_template(player: Player):
+        return dict(treatment = player.treatment,
+                    charity_receives = player.don_amount*2)
 # ----------------------------------------------------------------------------
 # ----------------------------------------------------------------------------
 # ----------------------------------------------------------------------------
@@ -331,12 +317,14 @@ page_sequence = [a_Welcome,
                  e_Results_P1_Inst_P2,
                  f_Donation_Ante,
                  f_Donation_Post_Hypothetical,
-                 g_Subjective_Risk,
+                 # g_Subjective_Risk,
+                 g2_Subjective_Risk2,
                  h_Before_Task_P2,
                  i_Task_P2,
-                 j_Results_P2,
-                 k_Donation_Ante_Hypothetical,
-                 k_Donation_Post]
+                 j_Donation_Ante_Hypothetical,
+                 j_Donation_Post,
+                 k_Questionnaire,
+                 l_Feedback]
 
 # ----------------------------------------------------------------------------
 # ----------------------------------------------------------------------------

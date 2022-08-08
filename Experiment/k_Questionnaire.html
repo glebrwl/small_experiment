@@ -1,11 +1,9 @@
 {% extends "global/Page.html" %}
 {% load otree static %}
 
-{% block title %}
-    Questionnaire
-{% endblock %}
-
 {% block content %}
+
+
 <script>
     jQuery(document).ready(function () {
         jQuery('input[type="radio"]').click(function () {
@@ -14,7 +12,7 @@
             let comboValue = jQuery(this).attr("value")
 
             // University question folding
-            if(comboId.startsWith("id_q_uni")){
+            if(comboId.startsWith("id_q_degree")){
                 if ( comboValue == "Yes") {
                     jQuery(".q_subject").show().removeClass('hide');
                 }
@@ -40,31 +38,47 @@
     });
 </script>
 
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-<p> <br> This short questionnaire is the final part. Afterwards, you will see an overview of your earnings.</p>
+
+
+<h3>
+    Initial Survey
+</h3>
+
+<p> <br> To begin, please answer a short survey about yourself.</p>
 
 <h6># 1</h6>
 {{ formfield 'q_age' }}
 
 <h6># 2</h6>
-{{ formfield 'q_sex' }}
+{{ formfield 'q_gender'  }}
+
 
 <h6># 3</h6>
-{{ formfield 'q_uni' }}
+{{formfield "q_Alevel"}}
+
+<h6># 4</h6>
+{{formfield "q_degree"}}
 
 
 <div class="q_subject hide">
-<h6># 3a</h6>
-    {{ formfield 'q_subject' }}
+<h6># 4a</h6>
+    {{formfield "q_subject"}}
 </div>
 
-<h6># 4</h6>
+<h6># 5</h6>
 {{ formfield 'q_employment'}}
 
 <div class="q_occupation hide">
-    <h6># 4a</h6>
-    {{ formfield 'q_occupation' }}
+    <h6># 5a</h6>
+    {{formfield "q_occupation"}}
 </div>
+
+
+
+
 
 <div class="button-row">
     <button class="otree-btn-next btn btn-primary">{{C.button_next}}</button>
