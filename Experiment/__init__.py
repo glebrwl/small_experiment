@@ -112,19 +112,22 @@ def player_get_earnings(player):
 
 def player_calculate_payoffs(player):
     player.P1_GBP = player.earnings_P1
+
     if player.participant.treatment == 1:
         player.P2_GBP = round(player.earnings_P2 * (1 - player.donate_ante_share/100), 2)
         player.don_amount = round(player.earnings_P2 * player.donate_ante_share/100, 2)
+
     elif player.participant.treatment == 2:
-        if donate_ante_abs >= player.earnings_P2:
+        if player.donate_ante_abs >= player.earnings_P2:
             player.P2_GBP = 0
             player.don_amount = player.earnings_P2
         else:
-            player.P2_GBP = player.earnings_P2 - player.donate_ante_abs
-            player.don_amount = player.donate_ante_abs
+            player.P2_GBP = round(player.earnings_P2 - player.donate_ante_abs, 2)
+            player.don_amount = round(player.donate_ante_abs, 2)
+
     else:
         player.P2_GBP = round(player.earnings_P2 * (1 - player.donate_post_share / 100), 2)
-        player.don_amount = round(player.earnings_P2 * player.donate_ante_share / 100, 2)
+        player.don_amount = round(player.earnings_P2 * player.donate_post_share / 100, 2)
 
     if player.P2_GBP >= C.GBP_threshold:
         player.bonus = C.bonus_amount
@@ -188,7 +191,7 @@ class e_Results_P1_Inst_P2(Page):
 
 class f_Donation_Ante(Page):
     form_model = 'player'
-    form_fields = ['donate_ante_abs', 'donate_ante_share']
+    form_fields = ['donate_ante_share', 'donate_ante_abs']
     @staticmethod
     def is_displayed(player):
         return player.participant.treatment == 1 or player.participant.treatment == 2
