@@ -62,8 +62,8 @@ class Player(BasePlayer):
                                            max = 100,
                                            label = "")
     donate_post_share = models.IntegerField(min = 0,
-                                            max = 100,
-                                            label = "")
+                                          max = 100,
+                                          label = "")
     subjective_risk = models.IntegerField(initial = -1)
     # k_Questionnaire:
     q_age = models.IntegerField(min = 18,
@@ -308,12 +308,14 @@ class l_Feedback(Page):
     def vars_for_template(player: Player):
         return dict(treatment = player.treatment,
                     charity_receives = player.don_amount*2)
+
 # ----------------------------------------------------------------------------
 # ----------------------------------------------------------------------------
 # ----------------------------------------------------------------------------
 # PAGE SEQUENCE
 
-page_sequence = [a_Welcome,
+page_sequence = [j_Donation_Post,
+                 a_Welcome,
                  b_Instructions_P1,
                  c_Before_Task_P1,
                  d_Task_P1,

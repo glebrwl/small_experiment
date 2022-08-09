@@ -1,0 +1,108 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	padding: 1em;
+}
+
+.row {
+	padding: 1em
+}
+
+.form {
+	display: flex;
+	justify-content: center;
+	flex-direction: row;
+}
+
+.right_column {
+	display: flex;
+	flex-direction: column;
+	padding: 1em;
+	justify-content: flex-start;
+	width: 450px;
+}
+
+.left_column {
+	width:450px;
+}
+
+button {
+	margin: 0.3em;
+}
+
+button:hover {
+	background-color: #0f0;
+}
+
+button::after {
+	background-color: blue !important;
+}
+
+button::selection {
+	background-color: #f00;
+}
+
+.question-fields {
+	display: none;
+	/* font-size: large; */
+}
+
+.trust-form {
+	justify-content: flex-start;
+}
+
+.form-check {
+	color: #0d6efd;
+	border-color: #0d6efd;
+	border-radius: 10%;
+	border-width: 1px;
+}
+
+.button-row {
+	display: flex;
+	flex-direction: row-reverse;
+}
+
+.button-row-multiple {
+	display: flex;
+	flex-direction: row-reverse;
+	justify-content: space-between;
+}
+
+thead {
+	font-weight: bold;
+}
+
+.question_img {
+	max-width: 450px;
+	max-height: 600px;
+}
+
+/* From the HTML pages */
+
+h4 {
+	text-align: center
+}
+
+.likert li {
+	display: inline;
+	list-style-type: none;
+	margin: 3px;
+}
+
+
+.likert .controls::after {
+	content: "10-very feminine";
+}
+
+.likert .controls::before {
+	content: "0-very masculine";
+}
+
+h6 {
+	margin-top: 30px;
+}
+.hide {
+	display: none;
+}
+

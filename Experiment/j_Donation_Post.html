@@ -14,9 +14,43 @@ Donation
 <p> You can now decide what share of your earnings from Part 2 would you donate to charity. If after the donation your earnings from Part 2 exceed {{C.GBP_threshold}} GBP, you will receive a bonus of {{C.bonus_amount}} GBP.</p>
 <p> Below you can enter any number between 0% (donate nothing) and 100% (donate all). By clicking "Calculate", you can see the donation amount given your earnings in Part 2.</p>
 
-{{formfield "donate_post_share"}}
+<div class="input-group mb-3">
+  <input type="number" id="donatepost_share" class="form-control" aria-label="Recipient's username" aria-describedby="basic-addon2">
+</div>
+
+<div class="buttonHolder">
+    <button type="button" class="btn btn-outline-primary" onclick="calculate_donation()">
+        Calculate</button>
+</div>
+
+<p id="total_donate">Total donation amount</p>
+
+<input type="hidden" name="donate_post_share" id="donate_post_share" />
 
 <div class="button-row">
-    <button class="otree-btn-next btn btn-primary">{{C.button_next}}</button>
+    <button class="otree-btn-next btn btn-primary" onclick="calculate_donation()">{{C.button_next}}</button>
 </div>
+
+<script>
+    function calculate_donation() {
+        var donation_share =  document.getElementById("donatepost_share").value;
+        if (donation_share) {
+            if (donation_share > 100) {
+                alert("You can not donate more than 100% of what you earned.");
+            }
+            else if (donation_share < 0) {
+                alert("You can not donate negative share.")
+            }
+            else {
+                var don_amount = ({{player.earnings_P2}} * donation_share/100).toFixed(2);
+                document.getElementById("total_donate").innerHTML = don_amount;
+                document.getElementById("donate_post_share").value = donation_share;
+            }
+        }
+        else {
+            alert("Enter your desired donation share.")
+        }
+    }
+</script>
+
 {% endblock %}
