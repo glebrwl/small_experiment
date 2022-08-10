@@ -170,7 +170,12 @@ class c_Before_Task_P1(Page):
     def vars_for_template(player: Player):
         player.Prolific_ID = player.participant.label
 
-class d_Task_P1(Page):
+# class d_Task_P1(Page):
+#     timeout_seconds = C.answertime
+#     form_model = 'player'
+#     form_fields = ['nr_correct_1']
+
+class d_Task_P1_nice(Page):
     timeout_seconds = C.answertime
     form_model = 'player'
     form_fields = ['nr_correct_1']
@@ -236,7 +241,15 @@ class g2_Subjective_Risk2(Page):
 class h_Before_Task_P2(Page):
     pass
 
-class i_Task_P2(Page):
+# class i_Task_P2(Page):
+#     timeout_seconds = C.answertime
+#     form_model = 'player'
+#     form_fields = ['nr_correct_2']
+#     @staticmethod
+#     def before_next_page(player, timeout_happened):
+#         player_get_earnings(player)
+
+class i_Task_P2_nice(Page):
     timeout_seconds = C.answertime
     form_model = 'player'
     form_fields = ['nr_correct_2']
@@ -252,7 +265,9 @@ class j_Donation_Ante_Hypothetical(Page):
         return player.participant.treatment == 1 or player.participant.treatment == 2
     @staticmethod
     def vars_for_template(player: Player):
-        return dict(treatment = player.participant.treatment
+        return dict(treatment = player.participant.treatment,
+                    label_text_treat_1 = "Below you can enter any number between 0% (donate nothing) and 100% (donate all). It is a hypothetical decision and will not affect your donation or your earnings.",
+                    label_text_treat_2 = "Below you can enter any donation amount starting from 0.00 GBP (donate nothing) to {} GBP. It is a hypothetical decision and will not affect your donation or your earnings.".format(player.earnings_P2)
                     )
     @staticmethod
     def get_form_fields(player):
@@ -314,18 +329,19 @@ class l_Feedback(Page):
 # ----------------------------------------------------------------------------
 # PAGE SEQUENCE
 
-page_sequence = [j_Donation_Post,
-                 a_Welcome,
+page_sequence = [a_Welcome,
                  b_Instructions_P1,
                  c_Before_Task_P1,
-                 d_Task_P1,
+                 # d_Task_P1,
+                 d_Task_P1_nice,
                  e_Results_P1_Inst_P2,
                  f_Donation_Ante,
                  f_Donation_Post_Hypothetical,
                  # g_Subjective_Risk,
                  g2_Subjective_Risk2,
                  h_Before_Task_P2,
-                 i_Task_P2,
+                 # i_Task_P2,
+                 i_Task_P2_nice,
                  j_Donation_Ante_Hypothetical,
                  j_Donation_Post,
                  k_Questionnaire,

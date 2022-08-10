@@ -27,6 +27,11 @@
     .buttonHolder{
         text-align: center;
     }
+    #content {
+        position: absolute;
+        top: 40px;
+        right: 40px;
+    }
 </style>
 
 <div class="QuestionDIV">
@@ -67,12 +72,17 @@
     </table>
     <p>
         <div class="buttonHolder">
-            <input type="submit" id="check_button" value="Submit" >
+            <input type="submit" class="btn btn-outline-primary" id="check_button" value="Submit" >
             <input type="hidden" name="nr_correct_2" id="Task2Correct" />
         </div>
     </p>
 </div>
 
+<div class="card" id="content">
+  <div class="card-body">
+      <b> Correctly soved tasks: <a id="current_score">0</a> </b>
+  </div>
+</div>
 
 <script type="text/javascript">
     var score = 0
@@ -206,6 +216,7 @@
            score++;
        }
        task2_score.value = score;
+       document.getElementById("current_score").innerHTML = task2_score.value
        if (sum_answers == target) {
            new_task(move_on = 'Yes')
        }

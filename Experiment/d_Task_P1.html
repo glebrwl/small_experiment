@@ -24,8 +24,13 @@
     td:hover {
         background-color: azure;
     }
-    .buttonHolder{
+    .buttonHolder {
         text-align: center;
+    }
+    #content {
+        position: absolute;
+        top: 40px;
+        right: 40px;
     }
 </style>
 
@@ -67,10 +72,16 @@
     </table>
     <p>
         <div class="buttonHolder">
-            <input type="submit" id="check_button" value="Submit" >
+            <input type="submit" class="btn btn-outline-primary" id="check_button" value="Submit" >
             <input type="hidden" name="nr_correct_1" id="Task1Correct" />
         </div>
     </p>
+</div>
+
+<div class="card" id="content">
+  <div class="card-body">
+      <b> Correctly soved tasks: <a id="current_score">0</a> </b>
+  </div>
 </div>
 
 <script type="text/javascript">
@@ -128,7 +139,6 @@
     document.getElementById("num7").innerHTML = num7
     document.getElementById("num8").innerHTML = num8
     document.getElementById("num9").innerHTML = num9
-
 
     document.getElementById("cell1").value = num1
     document.getElementById("cell2").value = num2
@@ -190,6 +200,7 @@
            score++;
        }
        task1_score.value = score;
+       document.getElementById("current_score").innerHTML = task1_score.value;
        if (sum_answers == target) {
            new_task(move_on = 'Yes')
        }
