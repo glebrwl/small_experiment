@@ -3,16 +3,16 @@ import itertools
 
 class C(BaseConstants):
     answertime = 60                             # Time given to perform tasks
-    bonus_amount = 10000                        # Specify bonus amount here
+    bonus_amount = 10                           # Specify bonus amount here
     button_next = 'Continue'
     charity_name = 'the Feast of Saint Patrick' # Specify the Charity name here
-    GBP_threshold = 0.1                         # Specify minimum GBP threshold for receiving bonus_amount
-    max_pay = 100000
+    GBP_threshold = 0.5                         # Specify minimum GBP threshold for receiving bonus_amount
+    max_pay = 10
     NAME_IN_URL = 'donations_experiment'
     not_defined = -1
     NUM_ROUNDS = 1
     participation_pay = 5                       # Payment for participation
-    piece_rate = 0.1                            # Payment per correct answer
+    piece_rate = 0.25                            # Payment per correct answer
     PLAYERS_PER_GROUP = None
     round_time = answertime//60
     study_time = 10
@@ -154,9 +154,9 @@ class b_Instructions_P1(Page):
     @staticmethod
     def error_message(player, values):
         if values['q_comprehension_screen_2_1'] == 0:
-            return 'The answer is incorrect. Please consult the instructions and try again.'
+            return 'At least one of the answers is incorrect. Please consult the instructions and try again.'
         if values['q_comprehension_screen_2_2'] == 1:
-            return 'The answer is incorrect. Please consult the instructions and try again.'
+            return 'At least one of the answers is incorrect. Please consult the instructions and try again.'
     @staticmethod
     def vars_for_template(player: Player):
         player.Prolific_ID = player.participant.label
@@ -191,7 +191,7 @@ class e_Results_P1_Inst_P2(Page):
     def vars_for_template(player: Player):
         player.Prolific_ID = player.participant.label
         return dict(treatment = player.participant.treatment,
-                    comprehension_screen_5_label = 'If after the donation is deducted, the earnings from Part 2 are higher than {}, one receives the bonus of {} GBP.'.format(C.GBP_threshold, C.bonus_amount)
+                    comprehension_screen_5_label = 'If after the donation is deducted, the earnings from Part 2 are higher than {} GBP, one receives the bonus of {} GBP.'.format(C.GBP_threshold, C.bonus_amount)
                     )
 
 class f_Donation_Ante(Page):

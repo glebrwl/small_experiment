@@ -1,7 +1,7 @@
 {% extends "global/Page.html" %}
 {% load otree %}
 
-{% block title %} Results of Part 1 and instructions to Part 2 {% endblock %}
+{% block title %} Instructions to Part 2 {% endblock %}
 
 {% block content %}
 <div id="Result">
@@ -9,7 +9,7 @@
 </div>
 
 <p> In Part 2, you can work on this task for another {{C.round_time}} minutes and will receive {{C.piece_rate}} per correctly solved screen.</p>
-<p> You may donate a share of your earnings in Part  2 to {{C.charity_name}} after the experiment. For this you will be asked to make a decision on your donations
+<p> You may donate a share of your earnings in Part 2 to {{C.charity_name}} after the experiment. For this you will be asked to make a decision on your donations
 {{ if treatment <= 2 }}
     before
 {{else}}
@@ -23,14 +23,14 @@ Part 2. The researches will match every donation made during the experiment. You
 {{endif}}
 
 {{if treatment == 2}}
-    <p> Before you start working on the task you can decide how much you want to donate to charity. You can only donate from what you will earn in Part 2. On the next screen, you can enter a donation amount starting from 0.00 GBP (donate nothing). If the donation amount you chose, exceeds your earnings in Part 2, your complete earnings from Part 2 will be donated to the charity. </p>
+    <p> Before you start working on the task you can decide how much you want to donate to charity. You can only donate from what you will earn in Part 2. On the next screen, you can enter a donation amount starting from 0 GBP (donate nothing). You can enter any number up to a pence. If the donation amount you chose, will exceed your actual earnings in Part 2, your complete earnings from Part 2 will be donated to the charity.</p>
 {{endif}}
 
 {{if treatment == 3}}
     <p> After you finished working on a task, you can choose what share of your earnings should be donated to the charity. On the respective screen, you will be able to enter any number between 0% (donate nothing) and 100% (donate all). The share you choose will be automatically recalculated and displayed on the screen in GBP.</p>
 {{endif}}
 
-<p> If after the donation, you earned more than {{C.GBP_threshold}} in Part 2, you will receive a bonus of {{C.bonus_amount}}} GBP. Therefore, ultimately, to receive the bonus, one need to earn in Part 2 at least {{C.GBP_threshold}} plus the chosen donation. </p>
+<p> If after the donation is deducted, you earn more than {{C.GBP_threshold}} GBP in Part 2, you will receive a bonus of {{C.bonus_amount}} GBP. Therefore, ultimately, to receive the bonus, one needs to earn in Part 2 at least {{C.GBP_threshold}} GBP plus the chosen donation. </p>
 
  <h5> Comprehension Question </h5>
 <p> Is this statement true or false? </p>
