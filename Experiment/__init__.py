@@ -322,6 +322,7 @@ class l_Feedback(Page):
     @staticmethod
     def vars_for_template(player: Player):
         return dict(treatment = player.treatment,
+                    don_amount = player.don_amount,
                     charity_receives = player.don_amount*2)
 
 # ----------------------------------------------------------------------------

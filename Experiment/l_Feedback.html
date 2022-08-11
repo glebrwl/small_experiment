@@ -21,7 +21,12 @@ Feedback
     {{endif}}
 {{endif}}
      your earnings from Part 2 to charity. Therefore for Part 2, you receive {{player.P2_GBP}} GBP yourself and {{player.don_amount}} GBP will be donated to charity at the end of the study. </p>
-<p> {{player.don_amount}} GBP will be matched therefore for your partiipation in the study. The charity will receive {{charity_receives}} GBP.</p>
+
+<p> {{ if don_amount > 0}}
+        {{player.don_amount}} GBP will be matched therefore for your partiipation in the study. The charity will receive {{charity_receives}} GBP.
+    {{endif}}
+</p>
+
 <p>  To receive the bonus of {{C.bonus_amount}} GBP, you had to earn at least {{C.GBP_threshold}} GBP in Part 2. As you earned {{player.P2_GBP}} GBP you do
 {{if player.bonus == 0}}
     not
