@@ -8,7 +8,7 @@
     <p> In Part 1, you solved {{player.nr_correct_1}} screens correctly. </p>
 </div>
 
-<p> In Part 2, you can work on this task for another {{C.round_time}} minutes and will receive {{C.piece_rate}} per correctly solved screen.</p>
+<p> In Part 2, you can work on this task for another {{C.round_time}} minutes and will receive {{C.piece_rate}} GBP per correctly solved screen.</p>
 <p> You may donate a share of your earnings in Part 2 to {{C.charity_name}} after the experiment. For this you will be asked to make a decision on your donations
 {{ if treatment <= 2 }}
     before
@@ -27,7 +27,7 @@ Part 2. The researches will match every donation made during the experiment. You
 {{endif}}
 
 {{if treatment == 3}}
-    <p> After you finished working on a task, you can choose what share of your earnings should be donated to the charity. On the respective screen, you will be able to enter any number between 0% (donate nothing) and 100% (donate all). The share you choose will be automatically recalculated and displayed on the screen in GBP.</p>
+    <p> After you finished working on a task, you can choose what share of your earnings should be donated to the charity. You can only donate from what you will earn in Part 2. On the respective screen, you will be able to enter any number between 0% (donate nothing) and 100% (donate all). The share you choose will be automatically recalculated and displayed on the screen in GBP for you to make a decision.</p>
 {{endif}}
 
 <p> If after the donation is deducted, you earn more than {{C.GBP_threshold}} GBP in Part 2, you will receive a bonus of {{C.bonus_amount}} GBP. Therefore, ultimately, to receive the bonus, one needs to earn in Part 2 at least {{C.GBP_threshold}} GBP plus the chosen donation. </p>

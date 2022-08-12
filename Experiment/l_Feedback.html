@@ -7,8 +7,8 @@ Feedback
 
 {% block content %}
 <p> Thank you for taking part in the study. Here is overview of your earnings. </p>
-<p> You receive a participation fee of {{C.participation_pay}} GBP. </p>
-<p> In Part 1, you solved {{player.nr_correct_1}} tasks and receive {{player.P1_GBP}} GBP. </p>
+<p> You receive a participation fee of <b>{{C.participation_pay}} GBP </b>. </p>
+<p> In Part 1, you solved {{player.nr_correct_1}} tasks and receive <b>{{player.P1_GBP}} GBP </b>. </p>
 <p> In Part 2, you solved {{player.nr_correct_2}} tasks. </p>
 <p> You chose to donate
 {{if treatment == 2}}
@@ -20,10 +20,10 @@ Feedback
         {{player.donate_post_share}} % of
     {{endif}}
 {{endif}}
-     your earnings from Part 2 to charity. Therefore for Part 2, you receive {{player.P2_GBP}} GBP yourself and {{player.don_amount}} GBP will be donated to charity at the end of the study. </p>
+    your earnings from Part 2 to charity. Therefore for Part 2, you receive <b>{{player.P2_GBP}} GBP </b> yourself and <b>{{player.don_amount}} GBP </b> will be donated to charity at the end of the study. </p>
 
 <p> {{ if don_amount > 0}}
-        {{player.don_amount}} GBP will be matched therefore for your partiipation in the study. The charity will receive {{charity_receives}} GBP.
+      Your donation of {{player.don_amount}} GBP will be matched. Therefore for your participation in the study the charity will receive <b>{{charity_receives}} GBP </b>.
     {{endif}}
 </p>
 
@@ -33,7 +33,7 @@ Feedback
 {{endif}}
 receive the bonus.
 </p>
-<p> In summary, for today's study you earned {{player.total_earnings}} GBP. For your participation in the study the charity will receive {{charity_receives}} GBP.</p>
+<p> In summary, for today's study you earned <b>{{player.total_earnings}} GBP</b>. For your participation in the study the charity will receive <b>{{charity_receives}} GBP </b>.</p>
 <p> The payment will be administered via Prolific within 4 working days. </p>
 <p> Please click "Complete" to finish the study and return to Prolific. </p>
 
