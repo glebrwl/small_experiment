@@ -5,7 +5,7 @@ class C(BaseConstants):
     answertime = 60                             # Time given to perform tasks
     bonus_amount = 10                           # Specify bonus amount here
     button_next = 'Continue'
-    charity_name = 'the Feast of Saint Patrick' # Specify the Charity name here
+    charity_name = 'the Red Cross' # Specify the Charity name here
     GBP_threshold = 0.5                         # Specify minimum GBP threshold for receiving bonus_amount
     max_pay = 10
     NAME_IN_URL = 'donations_experiment'
