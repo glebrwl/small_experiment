@@ -2,7 +2,7 @@ from otree.api import *
 import itertools
 
 class C(BaseConstants):
-    answertime = 60                             # Time given to perform tasks
+    answertime = 240                             # Time given to perform tasks
     bonus_amount = 10                           # Specify bonus amount here
     button_next = 'Continue'
     charity_name = 'the Feast of Saint Patrick' # Specify the Charity name here

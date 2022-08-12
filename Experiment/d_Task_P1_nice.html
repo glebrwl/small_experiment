@@ -223,8 +223,13 @@
             }
         }
         else {
-        	alert("Chosen numbers do not sum up to the target number. Try again.")
-            new_task(move_on = 'No')
+        	alert("Chosen numbers do not sum up to the target number. Try again." + sum_answers + "|" + clickedNumbers)
+            new_task(move_on = 'No');
+            clickedButtons = [];
+            clickedNumbers = [];
+            for (i = 1; i <= 9; i++) {
+                document.getElementById("btn" + i).className = 'btn btn-outline-primary';
+            }
 		}
     });
 
