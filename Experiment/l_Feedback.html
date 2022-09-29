@@ -8,8 +8,8 @@ Feedback
 {% block content %}
 <p> Thank you for taking part in the study. Here is overview of your earnings. </p>
 <p> You receive a participation fee of <b>{{C.participation_pay}} GBP </b>. </p>
-<p> In Part 1, you solved {{player.nr_correct_1}} tasks and receive <b>{{player.P1_GBP}} GBP </b>. </p>
-<p> In Part 2, you solved {{player.nr_correct_2}} tasks. </p>
+<p> In Part 1, you solved {{player.num_correct_1}} tasks and receive <b>{{player.P1_GBP}} GBP </b>. </p>
+<p> In Part 2, you solved {{player.num_correct_2}} tasks. </p>
 <p> You chose to donate
 {{if treatment == 2}}
     {{player.donate_ante_abs}} GBP from
