@@ -19,7 +19,7 @@ INPUT_TYPE = "text"
 INPUT_HINT = "enter text decoded from the number"
 
 class C(BaseConstants):
-    answertime = 20                             # Time given to perform tasks
+    answertime = 10                             # Time given to perform tasks
     bonus_amount = 10                           # Specify bonus amount here
     button_next = 'Continue'
     charity_name = 'the Red Cross' # Specify the Charity name here
@@ -53,7 +53,7 @@ def creating_session(subsession):
 
     session = subsession.session
     defaults = dict(
-        retry_delay = 0.3, puzzle_delay = 0.3, attempts_per_puzzle=1, max_iterations=None
+        retry_delay = 0.1, puzzle_delay = 0.1, attempts_per_puzzle = 1, max_iterations = None
     )
     session.params = {}
     for param in defaults:
@@ -64,24 +64,18 @@ class Group(BaseGroup):
 
 class Player(BasePlayer):
 
-    iteration = models.IntegerField(initial=0)                  #####################################
-    num_trials = models.IntegerField(initial=0)                 #####################################
-    num_correct = models.IntegerField(initial=0)                #####################################
-    num_failed = models.IntegerField(initial=0)                 #####################################
+    iteration = models.IntegerField(initial = 0)                  #####################################
+    num_trials = models.IntegerField(initial = 0)                 #####################################
+    num_correct = models.IntegerField(initial = 0)                #####################################
+    num_failed = models.IntegerField(initial = 0)                 #####################################
 
     Prolific_ID = models.LongStringField()
     treatment = models.IntegerField(initial = 0)
     #Correct answers in Part 1 and Part 2:
     num_correct_1 = models.IntegerField(initial = -1)
-    num_correct_2 = models.IntegerField(initial = -1)
     #Payment info:
     earnings_P1 = models.FloatField(initial=-1)
-    earnings_P2 = models.FloatField(initial = -1)
     P1_GBP = models.FloatField(initial=-1)
-    P2_GBP = models.FloatField(initial=-1)
-    don_amount = models.FloatField(initial=-1)
-    bonus = models.FloatField(initial = 0)
-    total_earnings = models.FloatField(initial = 0)
     #Comprehension Questions:
     q_comprehension_screen_2_1 = models.IntegerField(choices = [[1, 'True'], [0, 'False']],
                                                      label = 'In each screen, there are only two numbers that sum up to the target number.',
@@ -89,55 +83,6 @@ class Player(BasePlayer):
     q_comprehension_screen_2_2 = models.IntegerField(choices = [[1, 'True'], [0, 'False']],
                                                      label = 'The target number is the same in all screens.',
                                                      widget = widgets.RadioSelectHorizontal)
-    q_comprehension_screen_5 = models.IntegerField(choices = [[1, 'True'], [0, 'False']],
-                                                   widget = widgets.RadioSelectHorizontal)
-    #Donations decisions:
-    donate_ante_abs = models.FloatField(min = 0,
-                                          max = C.max_pay,
-                                          label = "")
-    donate_ante_abs_hypo = models.FloatField(min = 0,
-                                             label = "")
-    donate_ante_share = models.IntegerField(min = 0,
-                                            max = 100,
-                                            label = "")
-    donate_ante_share_hypo = models.IntegerField(min = 0,
-                                                 max = 100,
-                                                 label = "")
-    donate_post_hypo = models.IntegerField(min = 0,
-                                           max = 100,
-                                           label = "")
-    donate_post_share = models.IntegerField(min = 0,
-                                          max = 100,
-                                          label = "")
-    subjective_risk = models.IntegerField(initial = -1)
-    # k_Questionnaire:
-    q_age = models.IntegerField(min = 18,
-                                max = 99,
-                                label = "How old are you?")
-    q_gender = models.StringField(choices = [['Female', 'Female'], ['Male', 'Male']],
-                                  label = "What is your sex?",
-                                  widget = widgets.RadioSelectHorizontal)
-    q_Alevel = models.BooleanField( choices = [['Yes', 'Yes'], ['No', 'No']],
-                                    label = "Have you completed A levels or an equivalent level of education that qualifies you for university studies?",
-                                    widget = widgets.RadioSelectHorizontal)
-    q_degree = models.BooleanField(choices = [['Yes', 'Yes'], ['No', 'No']],
-                                   label = "Were you a university student at some point in time during your life, including current enrollment?",
-                                   widget = widgets.RadioSelectHorizontal)
-    q_subject = models.StringField(choices = [[1, 'Humanities'], [2, 'Business and Economics'],
-                                              [3, 'Other Social Sciences'], [4, 'Engineering and Computer Science'],
-                                              [5, 'Life Sciences'], [6, 'Cognitive Science'], [7, 'Other Natural Sciences and Math'], [8, 'Law']],
-                                   label = "Which of the following categories best fits the subject you studied?",
-                                   initial = 0,
-                                   blank = True)
-    q_employment = models.StringField(choices = [['Full-Time', 'Full-Time'],
-                                                 ['Part-Time', 'Part-Time'],
-                                                 ['Self-employed', 'Self-employed'],
-                                                 ['No', 'No']],
-                                      label = "Are you currently employed?",
-                                      widget = widgets.RadioSelectHorizontal)
-    q_occupation = models.StringField(initial = "",
-                                      label = "What is your current occupation?",
-                                      blank = True)
 
 # puzzle-specific stuff
 class Puzzle(ExtraModel):
@@ -160,31 +105,6 @@ class Puzzle(ExtraModel):
 # FUNCTIONS
 def player_get_earnings(player):
     player.earnings_P1 = round(player.num_correct_1 * C.piece_rate, 2)
-    player.earnings_P2 = round(player.num_correct_2 * C.piece_rate, 2)
-
-def player_calculate_payoffs(player):
-    player.P1_GBP = player.earnings_P1
-
-    if player.participant.treatment == 1:
-        player.P2_GBP = round(player.earnings_P2 * (1 - player.donate_ante_share/100), 2)
-        player.don_amount = round(player.earnings_P2 * player.donate_ante_share/100, 2)
-
-    elif player.participant.treatment == 2:
-        if player.donate_ante_abs >= player.earnings_P2:
-            player.P2_GBP = 0
-            player.don_amount = player.earnings_P2
-        else:
-            player.P2_GBP = round(player.earnings_P2 - player.donate_ante_abs, 2)
-            player.don_amount = round(player.donate_ante_abs, 2)
-
-    else:
-        player.P2_GBP = round(player.earnings_P2 * (1 - player.donate_post_share / 100), 2)
-        player.don_amount = round(player.earnings_P2 * player.donate_post_share / 100, 2)
-
-    if player.P2_GBP >= C.GBP_threshold:
-        player.bonus = C.bonus_amount
-
-    player.total_earnings = round(C.participation_pay + player.P1_GBP + player.P2_GBP + player.bonus, 2)
 
 def generate_puzzle_fields():
     """Create new puzzle for a player"""
@@ -344,18 +264,18 @@ def play_game(player: Player, message: dict):
         if current is None:
             raise RuntimeError("trying to answer no puzzle")
 
-        if current.response is not None:  # it's a retry
-            if current.attempts >= params["attempts_per_puzzle"]:
-                raise RuntimeError("no more attempts allowed")
-            if now < current.response_timestamp + params["retry_delay"]:
-                raise RuntimeError("retrying too fast")
-
-            # undo last updation of player progress
-            player.num_trials -= 1
-            if current.is_correct:
-                player.num_correct -= 1
-            else:
-                player.num_failed -= 1
+        # if current.response is not None:  # it's a retry
+        #     if current.attempts >= params["attempts_per_puzzle"]:
+        #         raise RuntimeError("no more attempts allowed")
+        #     if now < current.response_timestamp + params["retry_delay"]:
+        #         raise RuntimeError("retrying too fast")
+        #
+        #     # undo last updation of player progress
+        #     player.num_trials -= 1
+        #     if current.is_correct:
+        #         player.num_correct -= 1
+        #     else:
+        #         player.num_failed -= 1
 
         # check answer
         answer = message["answer"]
@@ -366,23 +286,23 @@ def play_game(player: Player, message: dict):
         current.response = answer
         current.is_correct = task_module.is_correct(answer, current)
         current.response_timestamp = now
-        current.attempts += 1
+        # current.attempts += 1
 
         # update player progress
         if current.is_correct:
             player.num_correct += 1
-        else:
-            player.num_failed += 1
+        # else:
+        #     player.num_failed += 1
         player.num_trials += 1
 
-        retries_left = params["attempts_per_puzzle"] - current.attempts
+        retries_left = params["attempts_per_puzzle"] #- current.attempts
         p = get_progress(player)
         return {
             my_id: dict(
-                type='feedback',
-                is_correct=current.is_correct,
-                retries_left=retries_left,
-                progress=p,
+                type = 'feedback',
+                is_correct = current.is_correct,
+                retries_left = retries_left,
+                progress = p,
             )
         }
 
@@ -392,18 +312,8 @@ def play_game(player: Player, message: dict):
 # ----------------------------------------------------------------------------
 # ----------------------------------------------------------------------------
 # PAGES
-class a_Welcome(Page):
-    @staticmethod
-    def is_displayed(player: Player):
-        return player.round_number == 1
 
-    @staticmethod
-    def vars_for_template(player: Player):
-        player.Prolific_ID = player.participant.label
-        player.treatment = player.participant.treatment
-        return dict(treatment = player.treatment)
- #I do not know why it does not show the variable in the database, but it generates it, see welcome page.
-class b_Instructions_P1(Page):
+class a_Instructions_P1(Page):
     form_model = 'player'
     form_fields = ['q_comprehension_screen_2_1','q_comprehension_screen_2_2']
     @staticmethod
@@ -417,7 +327,7 @@ class b_Instructions_P1(Page):
         player.Prolific_ID = player.participant.label
         #MC: do not forget to put a checker on the second comprehension question too
 
-class c_Before_Task_P1(Page):
+class b_Before_Task_P1(Page):
     @staticmethod
     def before_next_page(player: Player, timeout_happened):
         pass
@@ -425,17 +335,7 @@ class c_Before_Task_P1(Page):
     def vars_for_template(player: Player):
         player.Prolific_ID = player.participant.label
 
-# class d_Task_P1(Page):
-#     timeout_seconds = C.answertime
-#     form_model = 'player'
-#     form_fields = ['num_correct_1']
-
-# class d_Task_P1_nice(Page):
-#     timeout_seconds = C.answertime
-#     form_model = 'player'
-#     form_fields = ['num_correct_1']
-
-class d_Task_P1_decoding(Page):
+class c_Task_P1_decoding(Page):
     timeout_seconds = C.answertime
     live_method = play_game
     form_model = 'player'
@@ -457,202 +357,21 @@ class d_Task_P1_decoding(Page):
             raise RuntimeError("malicious page submission")
         player.num_correct_1 = player.num_correct
         player.num_correct = 0
-        # player.num_trials = 0
-        # player.iteration = 0
-
-class e_Results_P1_Inst_P2(Page):
-    form_model = 'player'
-    form_fields = ['q_comprehension_screen_5']
-    @staticmethod
-    def error_message(player, values):
-        if values['q_comprehension_screen_5'] == 0:
-            return "The answer is incorrect. Please consult the instructions and try again."
-    @staticmethod
-    def vars_for_template(player: Player):
-        player.Prolific_ID = player.participant.label
-        return dict(treatment = player.participant.treatment,
-                    comprehension_screen_5_label = 'If after the donation is deducted, the earnings from Part 2 are higher than {} GBP, one receives the bonus of {} GBP.'.format(C.GBP_threshold, C.bonus_amount)
-                    )
-
-class f_Donation_Ante(Page):
-    form_model = 'player'
-    form_fields = ['donate_ante_share', 'donate_ante_abs']
-    @staticmethod
-    def is_displayed(player):
-        return player.participant.treatment == 1 or player.participant.treatment == 2
-    @staticmethod
-    def vars_for_template(player: Player):
-        return dict(treatment = player.participant.treatment
-                    )
-    @staticmethod
-    def get_form_fields(player):
-        if player.participant.treatment == 1:
-            return ['donate_ante_share']
-        elif player.participant.treatment == 2:
-            return ['donate_ante_abs']
-
-class f_Donation_Post_Hypothetical(Page):
-    form_model = 'player'
-    form_fields = ['donate_post_hypo']
-    @staticmethod
-    def is_displayed(player):
-        return player.participant.treatment == 3
-    @staticmethod
-    def vars_for_template(player: Player):
-        return dict(treatment = player.participant.treatment
-                    )
-
-class g_Subjective_Risk(Page):
-    form_model = 'player'
-    form_fields = ['subjective_risk']
-    @staticmethod
-    def vars_for_template(player: Player):
-        return dict(treatment = player.participant.treatment
-                    )
-
-class g2_Subjective_Risk2(Page):
-    form_model = 'player'
-    form_fields = ['subjective_risk']
-    @staticmethod
-    def vars_for_template(player: Player):
-        return dict(treatment = player.participant.treatment
-                    )
-
-class h_Before_Task_P2(Page):
-    pass
-
-# class i_Task_P2(Page):
-#     timeout_seconds = C.answertime
-#     form_model = 'player'
-#     form_fields = ['num_correct_2']
-#     @staticmethod
-#     def before_next_page(player, timeout_happened):
-#         player_get_earnings(player)
-
-# class i_Task_P2_nice(Page):
-#     timeout_seconds = C.answertime
-#     form_model = 'player'
-#     form_fields = ['num_correct_2']
-#     @staticmethod
-#     def before_next_page(player, timeout_happened):
-#         player_get_earnings(player)
-
-class i_Task_P2_decoding(Page):
-    timeout_seconds = C.answertime
-    live_method = play_game
-    # form_model = 'player'
-
-    @staticmethod
-    def js_vars(player: Player):
-        return dict(params = player.session.params)
-
-    @staticmethod
-    def vars_for_template(player: Player):
-        task_module = task_decoding
-        return dict(DEBUG = settings.DEBUG,
-                    input_type = task_module.INPUT_TYPE,
-                    placeholder = task_module.INPUT_HINT)
-
-    @staticmethod
-    def before_next_page(player: Player, timeout_happened):
-        if not timeout_happened and not player.session.params['max_iterations']:
-            raise RuntimeError("malicious page submission")
-        player.num_correct_2 = player.num_correct
         player_get_earnings(player)
 
-class j_Donation_Ante_Hypothetical(Page):
-    form_model = 'player'
-    form_fields = ['donate_ante_share_hypo', 'donate_ante_abs_hypo']
-    @staticmethod
-    def is_displayed(player):
-        return player.participant.treatment == 1 or player.participant.treatment == 2
-    @staticmethod
-    def vars_for_template(player: Player):
-        return dict(treatment = player.participant.treatment,
-                    label_text_treat_1 = "Below you can enter any number between 0% (donate nothing) and 100% (donate all). It is a hypothetical decision and will not affect your donation or your earnings.",
-                    label_text_treat_2 = "Below you can enter any donation amount starting from 0.00 GBP (donate nothing) to {} GBP. It is a hypothetical decision and will not affect your donation or your earnings.".format(player.earnings_P2)
-                    )
-    @staticmethod
-    def get_form_fields(player):
-        if player.participant.treatment == 1:
-            return ['donate_ante_share_hypo']
-        elif player.participant.treatment == 2:
-            return ['donate_ante_abs_hypo']
-    @staticmethod
-    def error_message(player, values):
-        if player.participant.treatment == 2:
-            if values['donate_ante_abs_hypo'] > player.earnings_P2:
-                return 'You can not enter number exceeding your earnings.'
-            if values['donate_ante_abs_hypo'] < 0:
-                return 'You can not enter negative number.'
-    @staticmethod
-    def before_next_page(player, timeout_happened):
-        player_calculate_payoffs(player)
-
-
-class j_Donation_Post(Page):
-    form_model = 'player'
-    form_fields = ['donate_post_share']
-    @staticmethod
-    def is_displayed(player):
-        return player.participant.treatment == 3
-    @staticmethod
-    def vars_for_template(player: Player):
-        return dict(treatment = player.treatment)
-    @staticmethod
-    def before_next_page(player, timeout_happened):
-        player_calculate_payoffs(player)
-
-class k_Questionnaire(Page):
-    # changed to Welcome base class
-    form_model = 'player'
-    form_fields = ['q_age',
-                   'q_gender',
-                   'q_Alevel',
-                   'q_degree',
-                   'q_subject',
-                   'q_employment',
-                   'q_occupation']
-    @staticmethod
-    def before_next_page(player: Player, timeout_happened):
-        if player.q_degree == 'No':
-            player.q_subject = " Not Applicable"
-        if player.q_employment == 'No':
-            player.q_occupation = "Not Applicable"
-
-class l_Feedback(Page):
+class d_Feedback(Page):
     form_model = 'player'
     @staticmethod
     def vars_for_template(player: Player):
         return dict(treatment = player.treatment,
-                    don_amount = player.don_amount,
-                    charity_receives = player.don_amount*2)
+                    correct_answers = player.num_correct_1)
 
 # ----------------------------------------------------------------------------
 # ----------------------------------------------------------------------------
 # ----------------------------------------------------------------------------
 # PAGE SEQUENCE
 
-page_sequence = [a_Welcome,
-                 b_Instructions_P1,
-                 c_Before_Task_P1,
-                 # d_Task_P1,
-                 # d_Task_P1_nice,
-                 d_Task_P1_decoding,
-                 e_Results_P1_Inst_P2,
-                 f_Donation_Ante,
-                 f_Donation_Post_Hypothetical,
-                 # g_Subjective_Risk,
-                 g2_Subjective_Risk2,
-                 h_Before_Task_P2,
-                 # i_Task_P2,
-                 # i_Task_P2_nice,
-                 i_Task_P2_decoding,
-                 j_Donation_Ante_Hypothetical,
-                 j_Donation_Post,
-                 k_Questionnaire,
-                 l_Feedback]
-
-# ----------------------------------------------------------------------------
-# ----------------------------------------------------------------------------
-# ----------------------------------------------------------------------------
+page_sequence = [a_Instructions_P1,
+                 b_Before_Task_P1,
+                 c_Task_P1_decoding,
+                 d_Feedback]
