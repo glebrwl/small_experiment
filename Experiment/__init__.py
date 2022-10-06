@@ -9,6 +9,7 @@ from PIL import Image, ImageDraw, ImageFont
 from .image_utils import encode_image
 from Experiment import task_decoding
 
+#test
 TEXT_FONT = Path(__file__).parent / "assets" / "FreeSerifBold.otf"
 
 CHARSET = tuple("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
