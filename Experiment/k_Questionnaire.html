@@ -1,0 +1,22 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block content %}
+
+
+
+
+<p>  Thank you for completing the task.</p>
+
+<h6># 1</h6>
+{{ formfield 'q_device' }}
+
+<h6># 2</h6>
+{{ formfield 'q_open'  }}
+
+
+<div class="button-row">
+    <button class="otree-btn-next btn btn-primary">{{C.button_next}}</button>
+</div>
+
+{% endblock %}

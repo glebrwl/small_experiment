@@ -20,7 +20,8 @@ INPUT_TYPE = "text"
 INPUT_HINT = "enter text decoded from the number"
 
 class C(BaseConstants):
-    answertime = 120                             # Time given to perform tasks
+    showup= 0.5
+    answertime = 180                             # Time given to perform tasks
     bonus_amount = 5                           # Specify bonus amount here
     button_next = 'Continue'
     charity_name = 'the Red Cross' # Specify the Charity name here
@@ -76,15 +77,23 @@ class Player(BasePlayer):
     num_correct_1 = models.IntegerField(initial = -1)
     #Payment info:
     earnings_P1 = models.FloatField(initial=-1)
+    earnings_total = models.FloatField(initial=-1)
     P1_GBP = models.FloatField(initial=-1)
     #Comprehension Questions:
     q_comprehension_screen_2_1 = models.IntegerField(choices = [[1, 'True'], [0, 'False']],
-                                                     label = 'In each screen, there are only two numbers that sum up to the target number.',
+                                                     label = 'The table that displays the correspondence between letters and digits remains the same for all 5 digit numbers',
                                                      widget = widgets.RadioSelectHorizontal)
     q_comprehension_screen_2_2 = models.IntegerField(choices = [[1, 'True'], [0, 'False']],
-                                                     label = 'The target number is the same in all screens.',
+                                                     label = 'You can decode as many 5 digit numbers as you wish within the given time.',
                                                      widget = widgets.RadioSelectHorizontal)
-
+    # k_Questionnaire:
+    q_device = models.StringField(choices = [[1, 'Laptop or PC'], [2, 'Tablet'],[3, 'Smartphone'], [4, 'Other']],
+                                  label = "What type of device did you use to complete this study?",
+                                  widget = widgets.RadioSelectHorizontal)
+    q_open = models.LongStringField(
+        label="Do you have any comments about the content of this study you would like to share with us?",
+        blank=True
+    )
 # puzzle-specific stuff
 class Puzzle(ExtraModel):
     """A model to keep record of all generated puzzles"""
@@ -106,7 +115,7 @@ class Puzzle(ExtraModel):
 # FUNCTIONS
 def player_get_earnings(player):
     player.earnings_P1 = round(player.num_correct_1 * C.piece_rate, 2)
-
+    player.earnings_total=C.showup+player.earnings_P1
 def generate_puzzle_fields():
     """Create new puzzle for a player"""
 
@@ -313,15 +322,18 @@ def play_game(player: Player, message: dict):
 # ----------------------------------------------------------------------------
 # ----------------------------------------------------------------------------
 # PAGES
+class A_a_Welcome1(Page):
+    def before_next_page(player: Player, timeout_happened):
+        pass
 
 class a_Instructions_P1(Page):
     form_model = 'player'
     form_fields = ['q_comprehension_screen_2_1','q_comprehension_screen_2_2']
     @staticmethod
     def error_message(player, values):
-        if values['q_comprehension_screen_2_1'] == 0:
+        if values['q_comprehension_screen_2_1'] == 1:
             return 'At least one of the answers is incorrect. Please consult the instructions and try again.'
-        if values['q_comprehension_screen_2_2'] == 1:
+        if values['q_comprehension_screen_2_2'] == 0:
             return 'At least one of the answers is incorrect. Please consult the instructions and try again.'
     @staticmethod
     def vars_for_template(player: Player):
@@ -340,6 +352,8 @@ class c_Task_P1_decoding(Page):
     timeout_seconds = C.answertime
     live_method = play_game
     form_model = 'player'
+
+    timer_text = 'Remaining time:'
 
     @staticmethod
     def js_vars(player: Player):
@@ -360,6 +374,11 @@ class c_Task_P1_decoding(Page):
         player.num_correct = 0
         player_get_earnings(player)
 
+class k_Questionnaire(Page):
+    form_model = 'player'
+    form_fields = ['q_device',
+                   'q_open']
+
 class d_Feedback(Page):
     form_model = 'player'
     @staticmethod
@@ -372,7 +391,9 @@ class d_Feedback(Page):
 # ----------------------------------------------------------------------------
 # PAGE SEQUENCE
 
-page_sequence = [a_Instructions_P1,
+page_sequence = [A_a_Welcome1,
+                 a_Instructions_P1,
                  b_Before_Task_P1,
                  c_Task_P1_decoding,
+                 k_Questionnaire,
                  d_Feedback]

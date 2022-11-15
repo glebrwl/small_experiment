@@ -2,16 +2,16 @@
 {% load otree static %}
 
 {% block content %}
-<p> The experiment consists of two parts. We will provide you with detailed instructions before each part.</p>
 
-<p> <b>Instructions Part 1</b> </p>
+<h5>Instructions  </h5>
 
-<p> In Part I, you will see 9 numbers on the screen. Your task is to find among them 2 numbers that sum up to a "target" number. In each screen only two numbers sum up to the target number. You will advance to a next screen once you submitted a correct answer. You will have {{C.round_time}} minutes to work on this task and will receive {{C.piece_rate}} GBP per correctly solved screen. The timer will indicate how much time is left. Once {{C.round_time}} minutes are up, you will learn how many tasks you solved correctly and receive the instructions for the Part 2 of the study.</p>
-<p> Note, most often it is faster not to use a calculator to find the solution.</p>
-<p> Below you find an example screen. In this example, 82 is the target number and the pair of 48 and 34 is the solution.</p>
+<p>
+    In this study, your task is to <b>decode a 5 digit number into corresponding letters</b>. As shown in the example below, on the screen you will see a table which displays a correspondence between the letters and the numbers. At the bottom of the screen you will see a 5 digit number which is to be decoded into a sequence of 5 letters. To submit the sequence of letters you can either click “Submit” or press “Enter”. </p>
+<p>For each correctly decoded 5 digit number you will receive <b>{{C.piece_rate| to2}} GBP</b>. Once you submitted a correct sequence of letters you will see a new screen with a new 5 digit number to be decoded and a new correspondence table. If you submit an incorrect sequence, you will see a pop-up and the entry field will become empty for the next attempt. The entry field is <b>not case sensitive</b>. You have <b>{{C.round_time}} minutes </b> to decode as many 5 digit numbers as you wish. The timer on top of the screen will indicate how much time remains and how many sequences you already decoded correctly.
+</p>
 
 <div style="text-align:center">
-    <img src="/static/global/example.jpg" width="95%" />
+    <img src="/static/global/example.jpg" width="70%" />
 </div>
 
 <style>
@@ -28,7 +28,7 @@
  <h5> Comprehension Question </h5>
 <p> Please answer the comprehension questions below. If you are not sure, you can consult the instructions.
 </p>
-<p> Is this statement true or false?
+<p> <b>Is this statement true or false?</b>
 </p>
 
 {{formfields}}

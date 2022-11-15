@@ -6,7 +6,11 @@ Feedback
 {% endblock %}
 
 {% block content %}
-<p>Thank you for taking part, you solved {{player.num_correct_1}} puzzles correctly. You receive {{C.piece_rate}} per puzzle, therefore your total payment is {{player.earnings_P1}} GBP.</p>
+<p>Thank you for taking part in the study!</p>
+<p>Your payment for completing the study is <b>{{C.showup| to2}} GBP</b>.</p>
+<p> In addition, you decoded {{player.num_correct_1}} sequences correctly. You receive {{C.piece_rate| to2}} per puzzle. Therefore, your bonus is <b>{{player.earnings_P1| to2}} GBP</b>.</p>
+<p> In total you receive <b>{{player.earnings_total| to2}} GBP</b> for this study. You will receive the payment within 4 working days.</p>
+
 <p> Please click "Complete" to finish the study and return to Prolific. </p>
 
 <div class="button-row">
