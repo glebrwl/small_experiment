@@ -27,7 +27,7 @@ class C(BaseConstants):
     charity_name = 'the Red Cross' # Specify the Charity name here
     GBP_threshold = 0.5                         # Specify minimum GBP threshold for receiving bonus_amount
     max_pay = 10
-    NAME_IN_URL = 'donations_experiment'
+    NAME_IN_URL = 'de'
     not_defined = -1
     NUM_ROUNDS = 1
     participation_pay = 0.5                       # Payment for participation
@@ -70,7 +70,7 @@ class Player(BasePlayer):
     num_trials = models.IntegerField(initial = 0)                 #####################################
     num_correct = models.IntegerField(initial = 0)                #####################################
     num_failed = models.IntegerField(initial = 0)                 #####################################
-
+    base_payoff = models.FloatField()
     Prolific_ID = models.LongStringField()
     treatment = models.IntegerField(initial = 0)
     #Correct answers in Part 1 and Part 2:
@@ -115,6 +115,7 @@ class Puzzle(ExtraModel):
 # FUNCTIONS
 def player_get_earnings(player):
     player.earnings_P1 = round(player.num_correct_1 * C.piece_rate, 2)
+    player.base_payoff = C.showup #(Saved as a part of payoff function)
     player.earnings_total=C.showup+player.earnings_P1
 def generate_puzzle_fields():
     """Create new puzzle for a player"""
