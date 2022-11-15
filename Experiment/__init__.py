@@ -20,8 +20,8 @@ INPUT_TYPE = "text"
 INPUT_HINT = "enter text decoded from the number"
 
 class C(BaseConstants):
-    answertime = 10                             # Time given to perform tasks
-    bonus_amount = 10                           # Specify bonus amount here
+    answertime = 120                             # Time given to perform tasks
+    bonus_amount = 5                           # Specify bonus amount here
     button_next = 'Continue'
     charity_name = 'the Red Cross' # Specify the Charity name here
     GBP_threshold = 0.5                         # Specify minimum GBP threshold for receiving bonus_amount
@@ -29,11 +29,11 @@ class C(BaseConstants):
     NAME_IN_URL = 'donations_experiment'
     not_defined = -1
     NUM_ROUNDS = 1
-    participation_pay = 5                       # Payment for participation
-    piece_rate = 0.25                            # Payment per correct answer
+    participation_pay = 0.5                       # Payment for participation
+    piece_rate = 0.05                            # Payment per correct answer
     PLAYERS_PER_GROUP = None
     round_time = answertime//60
-    study_time = 10
+    study_time = 4
     captcha_length = 3
 
     name_in_url = "transcription"                               #############################
