@@ -81,7 +81,7 @@ class Player(BasePlayer):
     P1_GBP = models.FloatField(initial=-1)
     #Comprehension Questions:
     q_comprehension_screen_2_1 = models.IntegerField(choices = [[1, 'True'], [0, 'False']],
-                                                     label = 'The table that displays the correspondence between letters and digits remains the same for all 5 digit numbers',
+                                                     label = 'The table that displays the correspondence between letters and digits remains the same for all 5 digit numbers.',
                                                      widget = widgets.RadioSelectHorizontal)
     q_comprehension_screen_2_2 = models.IntegerField(choices = [[1, 'True'], [0, 'False']],
                                                      label = 'You can decode as many 5 digit numbers as you wish within the given time.',

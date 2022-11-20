@@ -7,6 +7,15 @@
 {{ endblock }}
 
 {{ block content }}
+<style>
+  .otree-timer {
+      position: fixed;
+      top: 0;
+      right: 0;
+     width: 160px;
+  }
+</style>
+
 <div class="d-flex flex-column align-items-center">
     <h4>
         #<span id="iter-txt"></span>
@@ -34,4 +43,9 @@
 {{ block scripts }}
 <script src="{{ static 'real_effort.js' }}"></script>
 {{ if DEBUG }}<script src="{{ static 'real_effort_cheating.js' }}"></script>{{ endif }}
+
+
 {{ endblock }}
+
+
+

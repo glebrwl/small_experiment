@@ -3,15 +3,17 @@
 
 {% block content %}
 
-<h5>Instructions  </h5>
+<h4>Instructions  </h4>
 
 <p>
-    In this study, your task is to <b>decode 5 digit numbers into corresponding letters</b>. As shown in the example below, on the screen you will see a table which displays a correspondence between the letters and the numbers. At the bottom of the screen you will see a 5 digit number which is to be decoded into a sequence of 5 letters. To submit the sequence of letters you can either click “Submit” or press “Enter”. </p>
-<p>For each correctly decoded 5 digit number you will receive <b>{{C.piece_rate| to2}} GBP</b>. Once you submitted a correct sequence of letters you will see a new screen with a new 5 digit number to be decoded and a new correspondence table. If you submit an incorrect sequence, you will see a pop-up and the entry field will become empty for the next attempt. The entry field is <b>not case sensitive</b>. You have <b>{{C.round_time}} minutes </b> to decode as many 5 digit numbers as you wish. The timer on top of the screen will indicate how much time remains and how many sequences you already decoded correctly.
+    In this study, your task is to <b>decode 5 digit numbers into a sequence of corresponding letters</b>. </p>
+<p>   As in the example below, on the screen you will see a table which displays a correspondence between the letters and the numbers. Below it, you will see a 5 digit number which is to be decoded into <b>a sequence of 5 letters</b>. To submit the sequence of letters you can either click “Submit” or press “Enter”. </p>
+<p>For each correctly decoded 5 digit number you will receive <b>{{C.piece_rate| to2}} GBP</b>. Once you submitted a correct sequence of letters you will see a new screen with a new 5 digit number to be decoded and a new correspondence table. If you submit an incorrect sequence, you will see a pop-up and the entry field will become empty for the next attempt. The entry field is <b>not case sensitive</b>. </p>
+    <p>You have <b>{{C.round_time}} minutes </b> to decode as many 5 digit numbers as you wish. The timer will indicate how much time remains and how many sequences you already decoded correctly.
 </p>
 
 <div style="text-align:center">
-    <img src="/static/global/example.jpg" width="70%" />
+    <img src="/static/global/example.jpg" width="85%" />
 </div>
 
 <style>
